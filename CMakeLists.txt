@@ -15,10 +15,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
         INTERFACES
             Arieo-Interface-RHI::arieo_rhi_interface
         PACKAGES
-            Arieo-Interface-RHI
             # vulkan_sdk
             vma
-            Arieo-Core
         PRIVATE_INCLUDE_FOLDERS
             $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_win_x86_64_1.4.328.1/Include/vulkan
             $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_win_x86_64_1.4.328.1/Include

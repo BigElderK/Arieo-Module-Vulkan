@@ -1,5 +1,8 @@
 cmake_minimum_required (VERSION 3.31)
 
+include($ENV{ARIEO_BUILDENV_PACKAGE_INSTALL_FOLDER}/cmake/build_environment.cmake)
+project(ArieoEngine)
+
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     arieo_engine_project(
         arieo_vulkan_module
@@ -10,16 +13,18 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
             ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*/*.cpp
         INTERFACES
-            arieo::interface::rhi
+            Arieo-Interface-RHI::arieo_rhi_interface
         PACKAGES
+            Arieo-Interface-RHI
             # vulkan_sdk
             vma
+            Arieo-Core
         PRIVATE_INCLUDE_FOLDERS
             $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_win_x86_64_1.4.328.1/Include/vulkan
             $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_win_x86_64_1.4.328.1/Include
         PRIVATE_LIB_FOLDERS
             $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_win_x86_64_1.4.328.1/Lib
-        LIBS
+        PRIVATE_LIBS
             arieo::base
             arieo::core
             vma::vma
@@ -35,7 +40,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
             ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*/*.cpp
         INTERFACES
-            arieo::interface::rhi
+            Arieo-Interface-RHI::arieo_rhi_interface
         PACKAGES
             # vulkan_sdk
             vma
@@ -44,7 +49,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
             $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_macos_x86_64_1.4.328.1/include
         PRIVATE_LIB_FOLDERS
             $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_macos_x86_64_1.4.328.1/lib
-        LIBS
+        PRIVATE_LIBS
             arieo::base
             arieo::core
             vma::vma
@@ -60,14 +65,14 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
             ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*/*.cpp
         INTERFACES
-            arieo::interface::rhi
+            Arieo-Interface-RHI::arieo_rhi_interface
         PACKAGES
             vma
         PRIVATE_INCLUDE_FOLDERS
             ${CMAKE_SYSROOT}/usr/include/vulkan
             ${CMAKE_SYSROOT}/usr/include
         PRIVATE_LIB_FOLDERS
-        LIBS
+        PRIVATE_LIBS
             arieo::base
             arieo::core
             vulkan
@@ -84,7 +89,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
                 ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*.cpp
                 ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*/*.cpp
             INTERFACES
-                arieo::interface::rhi
+                Arieo-Interface-RHI::arieo_rhi_interface
             PACKAGES
                 vma
             PRIVATE_INCLUDE_FOLDERS
@@ -92,7 +97,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
                 $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_linux_x86_64_1.4.328.1/include
             PRIVATE_LIB_FOLDERS
                 $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_linux_x86_64_1.4.328.1/lib
-            LIBS
+            PRIVATE_LIBS
                 arieo::base
                 arieo::core
                 x11
@@ -109,16 +114,15 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
                 ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*.cpp
                 ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*/*.cpp
             INTERFACES
-                arieo::interface::rhi
+                Arieo-Interface-RHI::arieo_rhi_interface
             PACKAGES
                 vma
             PRIVATE_INCLUDE_FOLDERS
                 ${CMAKE_SYSROOT}/usr/include/vulkan
             PRIVATE_LIB_FOLDERS
-            LIBS
+            PRIVATE_LIBS
                 arieo::base
                 arieo::core
-                arieo::interface::rhi
                 vma::vma
                 vulkan
                 x11

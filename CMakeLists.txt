@@ -37,8 +37,10 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         PROJECT_TYPE module
 
         PACKAGES
+            Arieo-Interface-RHI
             # vulkan_sdk
             vma
+            Arieo-Core
         INTERFACES
             Arieo-Interface-RHI::arieo_rhi_interface
         PRIVATE_LIBS
@@ -64,7 +66,9 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
         PROJECT_TYPE module
 
         PACKAGES
+            Arieo-Interface-RHI
             vma
+            Arieo-Core
         INTERFACES
             Arieo-Interface-RHI::arieo_rhi_interface
         PRIVATE_LIBS
@@ -88,7 +92,9 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
             PROJECT_TYPE module
 
             PACKAGES
+                Arieo-Interface-RHI
                 vma
+                Arieo-Core
             INTERFACES
                 Arieo-Interface-RHI::arieo_rhi_interface
             PRIVATE_LIBS
@@ -115,7 +121,9 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
 
             PACKAGES
+                Arieo-Interface-RHI
                 vma
+                Arieo-Core
             INTERFACES
                 Arieo-Interface-RHI::arieo_rhi_interface
             PRIVATE_LIBS

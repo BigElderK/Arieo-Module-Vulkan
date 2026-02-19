@@ -9,11 +9,12 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
         PROJECT_TYPE module
 
         DEPENDENCIES
-            PACKAGES
+            ARIEO_PACKAGES
+                Arieo-Core
                 Arieo-Interface-RHI
+            THIRDPARTY_PACKAGES
                 # vulkan_sdk
                 vma
-                Arieo-Core
             INTERFACES
                 Arieo-Interface-RHI::arieo_rhi_interface
             PRIVATE_LIBS
@@ -28,9 +29,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
                 $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_win_x86_64_1.4.328.1/Include/vulkan
                 $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_win_x86_64_1.4.328.1/Include
             CXX_SOURCES
-                ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*.cpp
-                ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*.cpp
-                ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*/*.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/private/src/*.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/private/src/*/*.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/private/src/*/*/*.cpp
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     arieo_engine_project(
@@ -38,11 +39,12 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         PROJECT_TYPE module
 
         DEPENDENCIES
-            PACKAGES
+            ARIEO_PACKAGES
+                Arieo-Core
                 Arieo-Interface-RHI
+            THIRDPARTY_PACKAGES
                 # vulkan_sdk
                 vma
-                Arieo-Core
             INTERFACES
                 Arieo-Interface-RHI::arieo_rhi_interface
             PRIVATE_LIBS
@@ -57,9 +59,9 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
                 $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_macos_x86_64_1.4.328.1/include/vulkan
                 $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_macos_x86_64_1.4.328.1/include
             CXX_SOURCES
-                ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*.cpp
-                ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*.cpp
-                ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*/*.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/private/src/*.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/private/src/*/*.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/private/src/*/*/*.cpp
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
     arieo_engine_project(
@@ -67,10 +69,11 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
         PROJECT_TYPE module
 
         DEPENDENCIES
-            PACKAGES
-                Arieo-Interface-RHI
-                vma
+            ARIEO_PACKAGES
                 Arieo-Core
+                Arieo-Interface-RHI
+            THIRDPARTY_PACKAGES
+                vma
             INTERFACES
                 Arieo-Interface-RHI::arieo_rhi_interface
             PRIVATE_LIBS
@@ -83,9 +86,9 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
                 ${CMAKE_SYSROOT}/usr/include/vulkan
                 ${CMAKE_SYSROOT}/usr/include
             CXX_SOURCES
-                ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*.cpp
-                ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*.cpp
-                ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*/*.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/private/src/*.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/private/src/*/*.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/private/src/*/*/*.cpp
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     if(ARIEO_HOST_OS MATCHES "ubuntu")
@@ -94,10 +97,11 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
             PROJECT_TYPE module
 
             DEPENDENCIES
-                PACKAGES
-                    Arieo-Interface-RHI
-                    vma
+                ARIEO_PACKAGES
                     Arieo-Core
+                    Arieo-Interface-RHI
+                THIRDPARTY_PACKAGES
+                    vma
                 INTERFACES
                     Arieo-Interface-RHI::arieo_rhi_interface
                 PRIVATE_LIBS
@@ -114,9 +118,9 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
                     $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_linux_x86_64_1.4.328.1/include/vulkan
                     $ENV{DEVCRAFT_WORKSPACE}/vulkan/vulkansdk_linux_x86_64_1.4.328.1/include
                 CXX_SOURCES
-                    ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*.cpp
-                    ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*.cpp
-                    ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*/*.cpp
+                    ${CMAKE_CURRENT_LIST_DIR}/private/src/*.cpp
+                    ${CMAKE_CURRENT_LIST_DIR}/private/src/*/*.cpp
+                    ${CMAKE_CURRENT_LIST_DIR}/private/src/*/*/*.cpp
         )
     elseif(ARIEO_HOST_OS MATCHES "raspberry")
         arieo_engine_project(
@@ -124,10 +128,11 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
             PROJECT_TYPE module
 
             DEPENDENCIES
-                PACKAGES
-                    Arieo-Interface-RHI
-                    vma
+                ARIEO_PACKAGES
                     Arieo-Core
+                    Arieo-Interface-RHI
+                THIRDPARTY_PACKAGES
+                    vma
                 INTERFACES
                     Arieo-Interface-RHI::arieo_rhi_interface
                 PRIVATE_LIBS
@@ -140,9 +145,9 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
                 PRIVATE_INCLUDE_FOLDERS
                     ${CMAKE_SYSROOT}/usr/include/vulkan
                 CXX_SOURCES
-                    ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*.cpp
-                    ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*.cpp
-                    ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*/*.cpp
+                    ${CMAKE_CURRENT_LIST_DIR}/private/src/*.cpp
+                    ${CMAKE_CURRENT_LIST_DIR}/private/src/*/*.cpp
+                    ${CMAKE_CURRENT_LIST_DIR}/private/src/*/*/*.cpp
         )
     endif()
 endif()

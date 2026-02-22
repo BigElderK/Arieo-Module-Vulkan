@@ -1,10 +1,17 @@
 cmake_minimum_required (VERSION 3.31)
 
 include($ENV{ARIEO_BUILD_ENV_PACKAGES_OUTPUT_DIR}/cmake/build_environment.cmake)
-project(ArieoEngine)
+
+ARIEO_PACKAGE(
+    Arieo-Module-Vulkan
+    CATEGORY 02_engine
+    DEPENDS
+        https://github.com/BigElderK/Arieo-Core.git@main
+        https://github.com/BigElderK/Arieo-Interface-RHI.git@main
+)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    arieo_engine_project(
+    ARIEO_ENGINE_PROJECT(
         arieo_vulkan_module
         PROJECT_TYPE module
 
@@ -15,9 +22,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
             THIRDPARTY_PACKAGES
                 # vulkan_sdk
                 vma
-            INTERFACES
-                Arieo-Interface-RHI::arieo_rhi_interface
             PRIVATE_LIBS
+                Arieo-Interface-RHI::arieo_rhi_interface
                 Arieo-Core::arieo_core
                 vma::vma
                 vulkan-1
@@ -34,7 +40,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
                 ${CMAKE_CURRENT_LIST_DIR}/private/src/*/*/*.cpp
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    arieo_engine_project(
+    ARIEO_ENGINE_PROJECT(
         arieo_vulkan_module
         PROJECT_TYPE module
 
@@ -45,9 +51,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
             THIRDPARTY_PACKAGES
                 # vulkan_sdk
                 vma
-            INTERFACES
-                Arieo-Interface-RHI::arieo_rhi_interface
             PRIVATE_LIBS
+                Arieo-Interface-RHI::arieo_rhi_interface
                 Arieo-Core::arieo_core
                 vma::vma
                 vulkan.1
@@ -64,7 +69,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
                 ${CMAKE_CURRENT_LIST_DIR}/private/src/*/*/*.cpp
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
-    arieo_engine_project(
+    ARIEO_ENGINE_PROJECT(
         arieo_vulkan_module
         PROJECT_TYPE module
 
@@ -74,9 +79,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
                 Arieo-Interface-RHI
             THIRDPARTY_PACKAGES
                 vma
-            INTERFACES
-                Arieo-Interface-RHI::arieo_rhi_interface
             PRIVATE_LIBS
+                Arieo-Interface-RHI::arieo_rhi_interface
                 Arieo-Core::arieo_core
                 vulkan
                 vma::vma
@@ -92,7 +96,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     if(ARIEO_HOST_OS MATCHES "ubuntu")
-        arieo_engine_project(
+        ARIEO_ENGINE_PROJECT(
             arieo_vulkan_module
             PROJECT_TYPE module
 
@@ -102,9 +106,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
                     Arieo-Interface-RHI
                 THIRDPARTY_PACKAGES
                     vma
-                INTERFACES
-                    Arieo-Interface-RHI::arieo_rhi_interface
                 PRIVATE_LIBS
+                    Arieo-Interface-RHI::arieo_rhi_interface
                     Arieo-Core::arieo_core
                     x11
                     vma::vma
@@ -123,7 +126,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
                     ${CMAKE_CURRENT_LIST_DIR}/private/src/*/*/*.cpp
         )
     elseif(ARIEO_HOST_OS MATCHES "raspberry")
-        arieo_engine_project(
+        ARIEO_ENGINE_PROJECT(
             arieo_vulkan_module
             PROJECT_TYPE module
 
@@ -133,9 +136,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
                     Arieo-Interface-RHI
                 THIRDPARTY_PACKAGES
                     vma
-                INTERFACES
-                    Arieo-Interface-RHI::arieo_rhi_interface
                 PRIVATE_LIBS
+                    Arieo-Interface-RHI::arieo_rhi_interface
                     Arieo-Core::arieo_core
                     vma::vma
                     vulkan

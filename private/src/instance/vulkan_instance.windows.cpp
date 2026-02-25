@@ -23,7 +23,7 @@ namespace Arieo
 
     }
 
-    Interface::RHI::IRenderSurface* VulkanInstance::createSurface(Interface::Window::IWindow* window)
+    Base::Interface<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::Interface<Interface::Window::IWindow> window)
     {
         VkWin32SurfaceCreateInfoKHR create_info{};
 

@@ -15,7 +15,7 @@ namespace Arieo
         {
         }
 
-        void bindBuffer(size_t bind_index, Interface::RHI::IBuffer* buffer, size_t offset, size_t size) override
+        void bindBuffer(size_t bind_index, Base::Interface<Interface::RHI::IBuffer> buffer, size_t offset, size_t size) override
         {
             VulkanBuffer* vulkan_buffer = Base::castInterfaceToInstance<VulkanBuffer>(buffer);
             VkDescriptorBufferInfo bufferInfo{};
@@ -35,7 +35,7 @@ namespace Arieo
             vkUpdateDescriptorSets(m_vk_device, 1, &descriptor_write, 0, nullptr);
         }
 
-        void bindImage(size_t bind_index, Interface::RHI::IImage* image) override
+        void bindImage(size_t bind_index, Base::Interface<Interface::RHI::IImage> image) override
         {
             VulkanImage* vulkan_image = Base::castInterfaceToInstance<VulkanImage>(image);
             VkDescriptorImageInfo image_info{};
@@ -72,7 +72,7 @@ namespace Arieo
 
         }
 
-        Interface::RHI::IDescriptorSet* allocateDescriptorSet(Interface::RHI::IPipeline* pipeline)
+        Base::Interface<Interface::RHI::IDescriptorSet> allocateDescriptorSet(Base::Interface<Interface::RHI::IPipeline> pipeline)
         {
             VulkanPipeline* vulkan_pipeline = Base::castInterfaceToInstance<VulkanPipeline>(pipeline);
             
@@ -91,7 +91,7 @@ namespace Arieo
             return Base::newT<VulkanDescriptorSet>(m_vk_device, std::move(vk_descriptor_set));
         }
 
-        void freeDescriptorSet(Interface::RHI::IDescriptorSet* descriptor_set)
+        void freeDescriptorSet(Base::Interface<Interface::RHI::IDescriptorSet> descriptor_set)
         {
             VulkanDescriptorSet* vulkan_desc_set = Base::castInterfaceToInstance<VulkanDescriptorSet>(descriptor_set);
             vkFreeDescriptorSets(m_vk_device, m_vk_descriptor_pool, 1, &vulkan_desc_set->m_vk_descriptor_set);

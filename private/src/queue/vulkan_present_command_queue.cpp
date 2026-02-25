@@ -8,10 +8,10 @@
 
 namespace Arieo
 {
-    void VulkanPresentCommandQueue::present(Interface::RHI::ISwapchain* swapchain, std::uint32_t swapchain_image_index, Interface::RHI::IFramebuffer* framebuffer, Interface::RHI::ISemaphore* signal_semaphore)
+    void VulkanPresentCommandQueue::present(Base::Interface<Interface::RHI::ISwapchain> swapchain, std::uint32_t swapchain_image_index, Base::Interface<Interface::RHI::IFramebuffer> framebuffer, Base::Interface<Interface::RHI::ISemaphore> signal_semaphore)
     {
         VulkanSemaphore* vulkan_signal_semaphore = Base::castInterfaceToInstance<VulkanSemaphore>(signal_semaphore);
-        VulkanFramebuffer* vulkan_framebuffer = Base::castInterfaceToInstance<VulkanFramebuffer>(framebuffer);
+        // VulkanFramebuffer* vulkan_framebuffer = Base::castInterfaceToInstance<VulkanFramebuffer>(framebuffer);
         VulkanSwapchain* vulkan_swapchain = Base::castInterfaceToInstance<VulkanSwapchain>(swapchain);
 
         VkPresentInfoKHR present_info{};

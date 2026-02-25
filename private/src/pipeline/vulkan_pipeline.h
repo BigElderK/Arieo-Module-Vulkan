@@ -12,8 +12,8 @@ namespace Arieo
             : m_vk_pipeline(std::move(vk_pipeline)), 
             m_vk_pipeline_layout(std::move(vk_pipeline_layout)),
             m_vk_render_pass(std::move(vk_render_pass)),
-            m_vk_descriptor_set_layout(std::move(vk_descriptor_set_layout)),
-            m_vk_framebuffer_extent(vk_framebuffer_extent)
+            m_vk_framebuffer_extent(vk_framebuffer_extent),
+            m_vk_descriptor_set_layout(std::move(vk_descriptor_set_layout))
         {
 
         }

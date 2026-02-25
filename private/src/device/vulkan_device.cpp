@@ -37,7 +37,7 @@ namespace Arieo
         return Interface::RHI::Format::UNKNOWN;
     }
 
-    Interface::RHI::ISwapchain* VulkanDevice::createSwapchain(Interface::RHI::IRenderSurface* render_surface)
+    Base::Interface<Interface::RHI::ISwapchain> VulkanDevice::createSwapchain(Base::Interface<Interface::RHI::IRenderSurface> render_surface)
     {
         VulkanSurface* vulkan_surface = Base::castInterfaceToInstance<VulkanSurface>(render_surface);
 
@@ -149,7 +149,7 @@ namespace Arieo
             }
             else
             {
-                Interface::Window::IWindow* surface_window = render_surface->getAttachedWindow();
+                Base::Interface<Interface::Window::IWindow> surface_window = render_surface->getAttachedWindow();
                 Base::Math::Vector<uint32_t, 2> frame_buffer_size = surface_window->getFramebufferSize();
 
                 fixed_extent.width = std::clamp(frame_buffer_size.x, surface_capabilities.minImageExtent.width, surface_capabilities.maxImageExtent.width);
@@ -255,7 +255,6 @@ namespace Arieo
                 }
                 
                 VulkanImage* vulkan_image = Base::newT<VulkanImage>(    
-                    m_vk_device,                
                     std::move(vk_swapchain_image),
                     std::move(vk_swapchain_image_view),
                     VK_NULL_HANDLE, 
@@ -277,12 +276,12 @@ namespace Arieo
         return vulkan_swapchain;
     }
 
-    void VulkanDevice::destroySwapchain(Interface::RHI::ISwapchain* swapchain)
+    void VulkanDevice::destroySwapchain(Base::Interface<Interface::RHI::ISwapchain> swapchain)
     {
         VulkanSwapchain* vulkan_swapchain = Base::castInterfaceToInstance<VulkanSwapchain>(swapchain);
 
         // Destroy image resource
-        for(Interface::RHI::IImage* swapchain_image : vulkan_swapchain->m_image_resource_array)
+        for(Base::Interface<Interface::RHI::IImage>& swapchain_image : vulkan_swapchain->m_image_resource_array)
         {
             VulkanImage* vulkan_swapchain_image = Base::castInterfaceToInstance<VulkanImage>(swapchain_image);
             // Destroy image view.
@@ -295,16 +294,16 @@ namespace Arieo
         return;
     }
 
-    Interface::RHI::IFramebuffer* VulkanDevice::createFramebuffer(
-        Interface::RHI::IPipeline* pipeline, 
-        Interface::RHI::ISwapchain* swapchain,
-        const std::vector<Interface::RHI::IImageView*>& attachment_array
+    Base::Interface<Interface::RHI::IFramebuffer> VulkanDevice::createFramebuffer(
+        Base::Interface<Interface::RHI::IPipeline> pipeline, 
+        Base::Interface<Interface::RHI::ISwapchain> swapchain,
+        const std::vector<Base::Interface<Interface::RHI::IImageView>>& attachment_array
     )
     {
         VulkanPipeline* vulkan_pipeline = Base::castInterfaceToInstance<VulkanPipeline>(pipeline);
 
         std::vector<VkImageView> vk_attachment_array;
-        for(Interface::RHI::IImageView* attach_image_view : attachment_array)
+        for(const Base::Interface<Interface::RHI::IImageView>& attach_image_view : attachment_array)
         {
             vk_attachment_array.emplace_back(Base::castInterfaceToInstance<VulkanImageView>(attach_image_view)->m_vk_image_view);
         };
@@ -330,14 +329,14 @@ namespace Arieo
         return Base::newT<VulkanFramebuffer>(std::move(vk_framebuffer));
     }
 
-    void VulkanDevice::destroyFramebuffer(Interface::RHI::IFramebuffer* framebuffer)
+    void VulkanDevice::destroyFramebuffer(Base::Interface<Interface::RHI::IFramebuffer> framebuffer)
     {
         VulkanFramebuffer* vulkan_framebuffer = Base::castInterfaceToInstance<VulkanFramebuffer>(framebuffer);
         vkDestroyFramebuffer(m_vk_device, vulkan_framebuffer->m_vk_framebuffer, nullptr);
         Base::deleteT<VulkanFramebuffer>(std::move(vulkan_framebuffer));
     }
 
-    Interface::RHI::IShader* VulkanDevice::createShader(void* buf, size_t buf_size)
+    Base::Interface<Interface::RHI::IShader> VulkanDevice::createShader(void* buf, size_t buf_size)
     {
         VkShaderModuleCreateInfo create_info{};
         create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
@@ -356,7 +355,7 @@ namespace Arieo
         return Base::newT<VulkanShader>(std::move(shader_module));
     }
 
-    void VulkanDevice::destroyShader(Interface::RHI::IShader* shader)
+    void VulkanDevice::destroyShader(Base::Interface<Interface::RHI::IShader> shader)
     {
         VulkanShader* vulkan_shader = Base::castInterfaceToInstance<VulkanShader>(shader);
         vkDestroyShaderModule(m_vk_device, vulkan_shader->m_vk_shader_module, nullptr);
@@ -364,11 +363,11 @@ namespace Arieo
         Base::deleteT(vulkan_shader);
     }
 
-    Interface::RHI::IPipeline* VulkanDevice::createPipeline(
-        Interface::RHI::IShader* vert_shader, 
-        Interface::RHI::IShader* frag_shader, 
-        Interface::RHI::IImageView* target_color_attachment,
-        Interface::RHI::IImageView* target_depth_attachment
+    Base::Interface<Interface::RHI::IPipeline> VulkanDevice::createPipeline(
+        Base::Interface<Interface::RHI::IShader> vert_shader, 
+        Base::Interface<Interface::RHI::IShader> frag_shader, 
+        Base::Interface<Interface::RHI::IImageView> target_color_attachment,
+        Base::Interface<Interface::RHI::IImageView> target_depth_attachment
     )
     {
         VulkanImageView* target_color_image_view = Base::castInterfaceToInstance<VulkanImageView>(target_color_attachment);
@@ -379,13 +378,13 @@ namespace Arieo
         VkPipelineShaderStageCreateInfo vert_shader_stage_info{};
         vert_shader_stage_info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
         vert_shader_stage_info.stage = VK_SHADER_STAGE_VERTEX_BIT;
-        vert_shader_stage_info.module = Base::castInterfaceToInstance<VulkanShader>(vert_shader)->m_vk_shader_module;
+        vert_shader_stage_info.module = Base::castInterfaceToInstance<VulkanShader>(vert_shader.get())->m_vk_shader_module;
         vert_shader_stage_info.pName = "main";
 
         VkPipelineShaderStageCreateInfo frag_shader_stage_info{};
         frag_shader_stage_info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
         frag_shader_stage_info.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
-        frag_shader_stage_info.module = Base::castInterfaceToInstance<VulkanShader>(frag_shader)->m_vk_shader_module;
+        frag_shader_stage_info.module = Base::castInterfaceToInstance<VulkanShader>(frag_shader.get())->m_vk_shader_module;
         frag_shader_stage_info.pName = "main";
 
         VkPipelineShaderStageCreateInfo shaderStages[] = {vert_shader_stage_info, frag_shader_stage_info};
@@ -675,7 +674,7 @@ namespace Arieo
         );
     }
 
-    void VulkanDevice::destroyPipeline(Interface::RHI::IPipeline* pipeline)
+    void VulkanDevice::destroyPipeline(Base::Interface<Interface::RHI::IPipeline> pipeline)
     {
         VulkanPipeline* vulkan_pipeline = Base::castInterfaceToInstance<VulkanPipeline>(pipeline);
 
@@ -687,7 +686,7 @@ namespace Arieo
         Base::deleteT(vulkan_pipeline);
     }
     
-    Interface::RHI::IFence* VulkanDevice::createFence()
+    Base::Interface<Interface::RHI::IFence> VulkanDevice::createFence()
     {
         VkFenceCreateInfo fence_info{};
         fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;        
@@ -703,14 +702,14 @@ namespace Arieo
         return Base::newT<VulkanFence>(m_vk_device, std::move(vk_fence));
     }
 
-    void VulkanDevice::destroyFence(Interface::RHI::IFence* fence)
+    void VulkanDevice::destroyFence(Base::Interface<Interface::RHI::IFence> fence)
     {
         VulkanFence* vulkan_fence = Base::castInterfaceToInstance<VulkanFence>(fence);       
         vkDestroyFence(m_vk_device, vulkan_fence->m_vk_fence, nullptr);
         Base::deleteT(vulkan_fence);
     }
 
-    Interface::RHI::ISemaphore* VulkanDevice::createSemaphore()
+    Base::Interface<Interface::RHI::ISemaphore> VulkanDevice::createSemaphore()
     {
         VkSemaphoreCreateInfo semaphore_info{};
         semaphore_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -725,14 +724,14 @@ namespace Arieo
         return Base::newT<VulkanSemaphore>(m_vk_device, std::move(vk_semaphore));
     }
 
-    void VulkanDevice::destroySemaphore(Interface::RHI::ISemaphore* semaphore)
+    void VulkanDevice::destroySemaphore(Base::Interface<Interface::RHI::ISemaphore> semaphore)
     {
         VulkanSemaphore* vulkan_semaphore = Base::castInterfaceToInstance<VulkanSemaphore>(semaphore);       
         vkDestroySemaphore(m_vk_device, vulkan_semaphore->m_vk_semaphore, nullptr);
         Base::deleteT(vulkan_semaphore);
     }
 
-    Interface::RHI::IBuffer* VulkanDevice::createBuffer(
+    Base::Interface<Interface::RHI::IBuffer> VulkanDevice::createBuffer(
         size_t size, 
         Interface::RHI::BufferUsageBitFlags buffer_usage, 
         Interface::RHI::BufferAllocationFlags allocation_flag, 
@@ -760,14 +759,14 @@ namespace Arieo
         return Base::newT<VulkanBuffer>(std::move(vk_buffer), m_vma_allocator, std::move(vma_allocation));
     }
 
-    void VulkanDevice::destroyBuffer(Interface::RHI::IBuffer* buffer)
+    void VulkanDevice::destroyBuffer(Base::Interface<Interface::RHI::IBuffer> buffer)
     {
         VulkanBuffer* vulkan_buffer = Base::castInterfaceToInstance<VulkanBuffer>(buffer);
         vmaDestroyBuffer(m_vma_allocator, vulkan_buffer->m_vk_buffer, vulkan_buffer->m_vma_allocation);
         Base::deleteT<VulkanBuffer>(vulkan_buffer);
     }
 
-    Interface::RHI::IDescriptorPool* VulkanDevice::createDescriptorPool(size_t capacity)
+    Base::Interface<Interface::RHI::IDescriptorPool> VulkanDevice::createDescriptorPool(size_t capacity)
     {
         std::array<VkDescriptorPoolSize, 2> pool_sizes{};
         pool_sizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
@@ -795,14 +794,14 @@ namespace Arieo
         );
     }
 
-    void VulkanDevice::destroyDescriptorPool(Interface::RHI::IDescriptorPool* descriptor_pool)
+    void VulkanDevice::destroyDescriptorPool(Base::Interface<Interface::RHI::IDescriptorPool> descriptor_pool)
     {
         VulkanDescriptorPool* vulkan_descriptor_pool = Base::castInterfaceToInstance<VulkanDescriptorPool>(descriptor_pool);
         vkDestroyDescriptorPool(m_vk_device, vulkan_descriptor_pool->m_vk_descriptor_pool, nullptr);
         Base::deleteT<VulkanDescriptorPool>(vulkan_descriptor_pool);
     }
 
-    Interface::RHI::IImage* VulkanDevice::createImage(
+    Base::Interface<Interface::RHI::IImage> VulkanDevice::createImage(
         std::uint32_t width, 
         std::uint32_t height, 
         Interface::RHI::Format format, 
@@ -923,7 +922,6 @@ namespace Arieo
         }
 
         return Base::newT<VulkanImage>(
-            m_vk_device, 
             std::move(vk_image),
             std::move(vk_image_view),
             std::move(vk_sampler),
@@ -934,7 +932,7 @@ namespace Arieo
         );
     }
 
-    void VulkanDevice::destroyImage(Interface::RHI::IImage* image)
+    void VulkanDevice::destroyImage(Base::Interface<Interface::RHI::IImage> image)
     {
         VulkanImage* vulkan_image = Base::castInterfaceToInstance<VulkanImage>(image);
         vkDestroySampler(m_vk_device, vulkan_image->m_vulkan_image_sampler.m_vk_image_sampler, nullptr);

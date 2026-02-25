@@ -230,14 +230,14 @@ namespace Arieo
         return m_hardware_information_array;
     }
 
-    void VulkanInstance::destroySurface(Interface::RHI::IRenderSurface* surface)
+    void VulkanInstance::destroySurface(Base::Interface<Interface::RHI::IRenderSurface> surface)
     {
         VulkanSurface* vulkan_surface = Base::castInterfaceToInstance<VulkanSurface>(surface);
         vkDestroySurfaceKHR(m_vk_instance, vulkan_surface->m_vk_surface_khr, nullptr);
         Base::deleteT(vulkan_surface);
     }
 
-    Interface::RHI::IRenderDevice* VulkanInstance::createDevice(size_t hardware_index, Interface::RHI::IRenderSurface* surface)
+    Base::Interface<Interface::RHI::IRenderDevice> VulkanInstance::createDevice(size_t hardware_index, Base::Interface<Interface::RHI::IRenderSurface> surface)
     {
         uint32_t vk_phys_device_count = 0;
         vkEnumeratePhysicalDevices(m_vk_instance, &vk_phys_device_count, nullptr);
@@ -424,7 +424,7 @@ namespace Arieo
         );
     }
 
-    void VulkanInstance::destroyDevice(Interface::RHI::IRenderDevice* device)
+    void VulkanInstance::destroyDevice(Base::Interface<Interface::RHI::IRenderDevice> device)
     {
         VulkanDevice* vulkan_device = Base::castInterfaceToInstance<VulkanDevice>(device);
 

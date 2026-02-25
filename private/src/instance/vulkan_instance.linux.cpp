@@ -22,7 +22,7 @@ namespace Arieo
 
     }
 
-    Interface::RHI::IRenderSurface* VulkanInstance::createSurface(Interface::Window::IWindow* window)
+    Base::Interface<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::Interface<Interface::Window::IWindow> window)
     {
         if(window->getWindowPlatform() == Base::MakeStringID("x11"))
         {

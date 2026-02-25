@@ -17,7 +17,7 @@ namespace Arieo
 
         void bindBuffer(size_t bind_index, Base::Interface<Interface::RHI::IBuffer> buffer, size_t offset, size_t size) override
         {
-            VulkanBuffer* vulkan_buffer = Base::castInterfaceToInstance<VulkanBuffer>(buffer);
+            VulkanBuffer* vulkan_buffer = buffer.castTo<VulkanBuffer>();
             VkDescriptorBufferInfo bufferInfo{};
             bufferInfo.buffer = vulkan_buffer->m_vk_buffer;
             bufferInfo.offset = offset;
@@ -37,7 +37,7 @@ namespace Arieo
 
         void bindImage(size_t bind_index, Base::Interface<Interface::RHI::IImage> image) override
         {
-            VulkanImage* vulkan_image = Base::castInterfaceToInstance<VulkanImage>(image);
+            VulkanImage* vulkan_image = image.castTo<VulkanImage>();
             VkDescriptorImageInfo image_info{};
             image_info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
             image_info.imageView = vulkan_image->m_vulkan_image_view.m_vk_image_view;
@@ -74,7 +74,7 @@ namespace Arieo
 
         Base::Interface<Interface::RHI::IDescriptorSet> allocateDescriptorSet(Base::Interface<Interface::RHI::IPipeline> pipeline)
         {
-            VulkanPipeline* vulkan_pipeline = Base::castInterfaceToInstance<VulkanPipeline>(pipeline);
+            VulkanPipeline* vulkan_pipeline = pipeline.castTo<VulkanPipeline>();
             
             VkDescriptorSetAllocateInfo alloc_info{};
             alloc_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
@@ -93,7 +93,7 @@ namespace Arieo
 
         void freeDescriptorSet(Base::Interface<Interface::RHI::IDescriptorSet> descriptor_set)
         {
-            VulkanDescriptorSet* vulkan_desc_set = Base::castInterfaceToInstance<VulkanDescriptorSet>(descriptor_set);
+            VulkanDescriptorSet* vulkan_desc_set = descriptor_set.castTo<VulkanDescriptorSet>();
             vkFreeDescriptorSets(m_vk_device, m_vk_descriptor_pool, 1, &vulkan_desc_set->m_vk_descriptor_set);
             Base::deleteT(vulkan_desc_set);
         }

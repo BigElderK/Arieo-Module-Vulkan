@@ -39,7 +39,7 @@ namespace Arieo
                 return nullptr;
             }
 
-            return Base::newT<VulkanSurface>(std::move(surface), window);
+            return Base::Interface<Interface::RHI::IRenderSurface>::createAs<VulkanSurface>(std::move(surface), window);
         }
         else if(window->getWindowPlatform() == Base::MakeStringID("wayland"))
         {

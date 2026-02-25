@@ -86,6 +86,7 @@ namespace Arieo
         VkExtent3D m_vk_image_extent;
         VkFormat m_vk_image_format;
         VkImage m_vk_image;
+        
         VulkanImageView m_vulkan_image_view;
         VulkanImageSampler m_vulkan_image_sampler;
     };

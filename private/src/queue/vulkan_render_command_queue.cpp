@@ -10,10 +10,10 @@ namespace Arieo
 {
     void VulkanRenderCommandQueue::submitCommand(Base::Interface<Interface::RHI::ICommandBuffer> command_buffer, Base::Interface<Interface::RHI::IFence> fence, Base::Interface<Interface::RHI::ISemaphore> wait_semaphore, Base::Interface<Interface::RHI::ISemaphore> signal_semaphore)
     {
-        VulkanCommandBuffer* vulkan_command_buffer = Base::castInterfaceToInstance<VulkanCommandBuffer>(command_buffer);
-        VulkanSemaphore* vulkan_wait_semaphore = Base::castInterfaceToInstance<VulkanSemaphore>(wait_semaphore);
-        VulkanSemaphore* vulkan_signal_semaphore = Base::castInterfaceToInstance<VulkanSemaphore>(signal_semaphore);
-        VulkanFence* vulkan_fence = Base::castInterfaceToInstance<VulkanFence>(fence);
+        VulkanCommandBuffer* vulkan_command_buffer = command_buffer.castTo<VulkanCommandBuffer>();
+        VulkanSemaphore* vulkan_wait_semaphore = wait_semaphore.castTo<VulkanSemaphore>();
+        VulkanSemaphore* vulkan_signal_semaphore = signal_semaphore.castTo<VulkanSemaphore>();
+        VulkanFence* vulkan_fence = fence.castTo<VulkanFence>();
 
         VkSubmitInfo submit_info{};
         submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -42,7 +42,7 @@ namespace Arieo
     void VulkanRenderCommandQueue::submitCommand(Base::Interface<Interface::RHI::ICommandBuffer> command_buffer)
     {
         VkSubmitInfo submit_info{};
-        VulkanCommandBuffer* vulkan_command_buffer = Base::castInterfaceToInstance<VulkanCommandBuffer>(command_buffer);
+        VulkanCommandBuffer* vulkan_command_buffer = command_buffer.castTo<VulkanCommandBuffer>();
         submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
         submit_info.commandBufferCount = 1;
         submit_info.pCommandBuffers = &vulkan_command_buffer->m_vk_command_buffer;

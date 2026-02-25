@@ -20,7 +20,7 @@ namespace Arieo
         
         std::uint32_t acquireNextImageIndex(Base::Interface<Interface::RHI::ISemaphore> semaphore) override
         {
-            VulkanSemaphore* vulkan_semaphore = Base::castInterfaceToInstance<VulkanSemaphore>(semaphore);
+            VulkanSemaphore* vulkan_semaphore = semaphore.castTo<VulkanSemaphore>();
             std::uint32_t image_index = std::numeric_limits<std::uint32_t>::max();
 
             VkResult result = vkAcquireNextImageKHR(

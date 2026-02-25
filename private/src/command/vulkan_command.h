@@ -46,8 +46,8 @@ namespace Arieo
 
         void beginRenderPass(Base::Interface<Interface::RHI::IPipeline> pipeline, Base::Interface<Interface::RHI::IFramebuffer> frame_buffer) override
         {
-            VulkanPipeline* vulkan_pipeline = Base::castInterfaceToInstance<VulkanPipeline>(pipeline);
-            VulkanFramebuffer* vulkan_framebuffer = Base::castInterfaceToInstance<VulkanFramebuffer>(frame_buffer);
+            VulkanPipeline* vulkan_pipeline = pipeline.castTo<VulkanPipeline>();
+            VulkanFramebuffer* vulkan_framebuffer = frame_buffer.castTo<VulkanFramebuffer>();
 
             VkRenderPassBeginInfo renderpass_info{};
             renderpass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -61,7 +61,7 @@ namespace Arieo
             clear_values[0].color = {{0.0f, 0.0f, 0.0f, 1.0f}};
             clear_values[1].depthStencil = {1.0f, 0};
 
-            renderpass_info.clearValueCount = clear_values.size();
+            renderpass_info.clearValueCount = static_cast<uint32_t>(clear_values.size());
             renderpass_info.pClearValues = clear_values.data();
 
             vkCmdBeginRenderPass(m_vk_command_buffer, &renderpass_info, VK_SUBPASS_CONTENTS_INLINE);
@@ -74,7 +74,7 @@ namespace Arieo
 
         void bindPipeline(Base::Interface<Interface::RHI::IPipeline> pipeline) override
         {
-            VulkanPipeline* vulkan_pipeline = Base::castInterfaceToInstance<VulkanPipeline>(pipeline);
+            VulkanPipeline* vulkan_pipeline = pipeline.castTo<VulkanPipeline>();
             vkCmdBindPipeline(m_vk_command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vulkan_pipeline->m_vk_pipeline);
 
             VkViewport viewport{};
@@ -94,7 +94,7 @@ namespace Arieo
 
         void bindVertexBuffer(Base::Interface<Interface::RHI::IBuffer> vertext_buffer, uint32_t offset) override
         {
-            VulkanBuffer* vulkan_buffer = Base::castInterfaceToInstance<VulkanBuffer>(vertext_buffer);
+            VulkanBuffer* vulkan_buffer = vertext_buffer.castTo<VulkanBuffer>();
 
             VkBuffer vertex_buffers[] = {vulkan_buffer->m_vk_buffer};
             VkDeviceSize offsets[] = {offset};
@@ -107,7 +107,7 @@ namespace Arieo
 
         void bindIndexBuffer(Base::Interface<Interface::RHI::IBuffer> vertext_buffer, uint32_t offset) override
         {
-            VulkanBuffer* vulkan_buffer = Base::castInterfaceToInstance<VulkanBuffer>(vertext_buffer);
+            VulkanBuffer* vulkan_buffer = vertext_buffer.castTo<VulkanBuffer>();
 
             // VkBuffer vertexBuffers[] = {vulkan_buffer->m_vk_buffer};
             // VkDeviceSize offsets[] = {0};
@@ -131,8 +131,8 @@ namespace Arieo
 
         void copyBuffer(Base::Interface<Interface::RHI::IBuffer> src_buffer, Base::Interface<Interface::RHI::IBuffer> dest_buffer, uint32_t size) override
         {
-            VulkanBuffer* vulkan_src_buffer = Base::castInterfaceToInstance<VulkanBuffer>(src_buffer);
-            VulkanBuffer* vulkan_dest_buffer = Base::castInterfaceToInstance<VulkanBuffer>(dest_buffer);
+            VulkanBuffer* vulkan_src_buffer = src_buffer.castTo<VulkanBuffer>();
+            VulkanBuffer* vulkan_dest_buffer = dest_buffer.castTo<VulkanBuffer>();
 
             VkBufferCopy copy_info{};
             copy_info.srcOffset = 0; // Optional
@@ -147,8 +147,8 @@ namespace Arieo
 
         void copyBufferToImage(Base::Interface<Interface::RHI::IBuffer> buffer, Base::Interface<Interface::RHI::IImage> image) override
         {
-            VulkanBuffer* vulkan_buffer = Base::castInterfaceToInstance<VulkanBuffer>(buffer);
-            VulkanImage* vulkan_image = Base::castInterfaceToInstance<VulkanImage>(image);
+            VulkanBuffer* vulkan_buffer = buffer.castTo<VulkanBuffer>();
+            VulkanImage* vulkan_image = image.castTo<VulkanImage>();
 
             // Change Image layout befor copy
             {
@@ -238,7 +238,7 @@ namespace Arieo
 
         void prepareDepthImage(Base::Interface<Interface::RHI::IImage> depth_image) override
         {
-            VulkanImage* vulkan_depth_image = Base::castInterfaceToInstance<VulkanImage>(depth_image);
+            // VulkanImage* vulkan_depth_image = depth_image.castTo<VulkanImage>();
             // Chanage Image layout after copy
             {
                 VkImageMemoryBarrier barrier{};
@@ -246,7 +246,7 @@ namespace Arieo
                 barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
                 barrier.newLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
 
-                barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+                VulkanImage* vulkan_depth_image = depth_image.castTo<VulkanImage>();
                 barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 
                 barrier.image = vulkan_depth_image->m_vk_image;
@@ -281,8 +281,8 @@ namespace Arieo
 
         void bindDescriptorSets(Base::Interface<Interface::RHI::IPipeline> pipeline, Base::Interface<Interface::RHI::IDescriptorSet> descriptor_set) override
         {
-            VulkanPipeline* vulkan_pipeline = Base::castInterfaceToInstance<VulkanPipeline>(pipeline);
-            VulkanDescriptorSet* vulkan_descriptor_set = Base::castInterfaceToInstance<VulkanDescriptorSet>(descriptor_set);
+            VulkanPipeline* vulkan_pipeline = pipeline.castTo<VulkanPipeline>();
+            VulkanDescriptorSet* vulkan_descriptor_set = descriptor_set.castTo<VulkanDescriptorSet>();
 
             vkCmdBindDescriptorSets(
                 m_vk_command_buffer, 
@@ -327,12 +327,12 @@ namespace Arieo
                 Core::Logger::error("failed to allocate command buffers!");
             } 
             
-            return Base::newT<VulkanCommandBuffer>(std::move(vk_command_buffer));
+            return Base::Interface<Interface::RHI::ICommandBuffer>::createAs<VulkanCommandBuffer>(std::move(vk_command_buffer));
         }
 
         void freeCommandBuffer(Base::Interface<Interface::RHI::ICommandBuffer> command_buffer) override
         {
-            VulkanCommandBuffer* vulkan_command_buffer = Base::castInterfaceToInstance<VulkanCommandBuffer>(command_buffer);
+            VulkanCommandBuffer* vulkan_command_buffer = command_buffer.castTo<VulkanCommandBuffer>();
             vkFreeCommandBuffers(m_vk_device, m_vk_command_pool, 1, &vulkan_command_buffer->m_vk_command_buffer);
         }
     private:

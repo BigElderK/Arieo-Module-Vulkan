@@ -30,15 +30,15 @@ namespace Arieo
                 return nullptr;
             }
 
-            return Base::newT<VulkanCommandPool>(m_vk_device, std::move(vk_command_pool));
+            return Base::Interface<Interface::RHI::ICommandPool>::createAs<VulkanCommandPool>(m_vk_device, std::move(vk_command_pool));
         }
 
         void destroyCommandPool(Base::Interface<Interface::RHI::ICommandPool> command_pool) override
         {
-            VulkanCommandPool* vulkan_command_pool = Base::castInterfaceToInstance<VulkanCommandPool>(command_pool);
+            VulkanCommandPool* vulkan_command_pool = command_pool.castTo<VulkanCommandPool>();
             vkDestroyCommandPool(m_vk_device, vulkan_command_pool->m_vk_command_pool, nullptr);
             
-            return Base::deleteT(vulkan_command_pool);
+            return command_pool.destroyAs<VulkanCommandPool>();
         }
 
         void waitIdle() override

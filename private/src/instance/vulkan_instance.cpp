@@ -232,7 +232,7 @@ namespace Arieo
 
     void VulkanInstance::destroySurface(Base::Interface<Interface::RHI::IRenderSurface> surface)
     {
-        VulkanSurface* vulkan_surface = Base::castInterfaceToInstance<VulkanSurface>(surface);
+        VulkanSurface* vulkan_surface = surface.castTo<VulkanSurface>();
         vkDestroySurfaceKHR(m_vk_instance, vulkan_surface->m_vk_surface_khr, nullptr);
         Base::deleteT(vulkan_surface);
     }
@@ -268,7 +268,7 @@ namespace Arieo
 
                 for (uint32_t i = 0; i < queue_family_count; i++) 
                 {
-                    VulkanSurface* vulkan_surface = Base::castInterfaceToInstance<VulkanSurface>(surface);
+                    VulkanSurface* vulkan_surface = surface.castTo<VulkanSurface>();
                     if(vulkan_surface == nullptr)
                     {
                         Core::Logger::fatal("Surface is invalid.");
@@ -413,7 +413,7 @@ namespace Arieo
             }
         }
 
-        return Base::newT<VulkanDevice>(
+        return Base::Interface<Interface::RHI::IRenderDevice>::createAs<VulkanDevice>(
             std::move(vk_selected_phys_device),
             std::move(vk_device),
             std::move(vma_allocator),
@@ -426,11 +426,11 @@ namespace Arieo
 
     void VulkanInstance::destroyDevice(Base::Interface<Interface::RHI::IRenderDevice> device)
     {
-        VulkanDevice* vulkan_device = Base::castInterfaceToInstance<VulkanDevice>(device);
+        VulkanDevice* vulkan_device = device.castTo<VulkanDevice>();
 
         vmaDestroyAllocator(vulkan_device->m_vma_allocator);
 
         vkDestroyDevice(vulkan_device->m_vk_device, nullptr);
-        Base::deleteT(vulkan_device);
+        device.destroyAs<VulkanDevice>();
     }
 }

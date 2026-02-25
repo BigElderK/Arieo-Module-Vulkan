@@ -46,7 +46,7 @@ namespace Arieo
         Base::Interface<Interface::RHI::ISwapchain> createSwapchain(Base::Interface<Interface::RHI::IRenderSurface>) override;
         void destroySwapchain(Base::Interface<Interface::RHI::ISwapchain>) override;
 
-        Base::Interface<Interface::RHI::IFramebuffer> createFramebuffer(Base::Interface<Interface::RHI::IPipeline>, Base::Interface<Interface::RHI::ISwapchain> swapchain, const std::vector<Base::Interface<Interface::RHI::IImageView>>& attachment_array) override;
+        Base::Interface<Interface::RHI::IFramebuffer> createFramebuffer(Base::Interface<Interface::RHI::IPipeline>, Base::Interface<Interface::RHI::ISwapchain> swapchain, std::vector<Base::Interface<Interface::RHI::IImageView>>& attachment_array) override;
         void destroyFramebuffer(Base::Interface<Interface::RHI::IFramebuffer>) override;
 
         Base::Interface<Interface::RHI::IShader> createShader(void* buf, size_t buf_size) override;

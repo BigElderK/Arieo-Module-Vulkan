@@ -40,8 +40,8 @@ namespace Arieo
             VulkanImage* vulkan_image = image.castTo<VulkanImage>();
             VkDescriptorImageInfo image_info{};
             image_info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            image_info.imageView = vulkan_image->m_vulkan_image_view.m_vk_image_view;
-            image_info.sampler = vulkan_image->m_vulkan_image_sampler.m_vk_image_sampler;
+            image_info.imageView = vulkan_image->m_vulkan_image_view->m_vk_image_view;
+            image_info.sampler = vulkan_image->m_vulkan_image_sampler->m_vk_image_sampler;
 
             VkWriteDescriptorSet descriptor_write{};
             descriptor_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -88,14 +88,14 @@ namespace Arieo
             {
                 Core::Logger::error("Create allocate descriptor sets failed: {}", VulkanUtility::covertVkResultToString(result));
             }
-            return Base::newT<VulkanDescriptorSet>(m_vk_device, std::move(vk_descriptor_set));
+            return Base::Interface<Interface::RHI::IDescriptorSet>::createAs<VulkanDescriptorSet>(m_vk_device, std::move(vk_descriptor_set));
         }
 
         void freeDescriptorSet(Base::Interface<Interface::RHI::IDescriptorSet> descriptor_set)
         {
             VulkanDescriptorSet* vulkan_desc_set = descriptor_set.castTo<VulkanDescriptorSet>();
             vkFreeDescriptorSets(m_vk_device, m_vk_descriptor_pool, 1, &vulkan_desc_set->m_vk_descriptor_set);
-            Base::deleteT(vulkan_desc_set);
+            descriptor_set.destroyAs<VulkanDescriptorSet>();
         }
     private:
         friend class VulkanDevice;

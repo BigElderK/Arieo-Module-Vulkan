@@ -36,11 +36,11 @@ namespace Arieo
 
         Base::Interface<Interface::RHI::IRenderCommandQueue> getGraphicsCommandQueue() override
         {
-            return &m_graphics_queue;
+            return m_graphics_queue.queryInterface<Interface::RHI::IRenderCommandQueue>();
         }
         Base::Interface<Interface::RHI::IPresentCommandQueue> getPresentCommandQueue() override
         {
-            return &m_present_queue;
+            return m_present_queue.queryInterface<Interface::RHI::IPresentCommandQueue>();
         }
 
         Base::Interface<Interface::RHI::ISwapchain> createSwapchain(Base::Interface<Interface::RHI::IRenderSurface>) override;
@@ -77,8 +77,8 @@ namespace Arieo
         ::VmaAllocator m_vma_allocator;
 
         VkPhysicalDevice m_vk_phys_device; 
-        VulkanRenderCommandQueue m_graphics_queue;
-        VulkanPresentCommandQueue m_present_queue;
+        Base::Instance<VulkanRenderCommandQueue> m_graphics_queue;
+        Base::Instance<VulkanPresentCommandQueue> m_present_queue;
 
         std::uint32_t m_graphic_queue_index;
         std::uint32_t m_present_queue_index;

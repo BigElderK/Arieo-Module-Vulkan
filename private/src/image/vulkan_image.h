@@ -67,12 +67,12 @@ namespace Arieo
 
         Base::Interface<Interface::RHI::IImageView> getImageView() override
         {
-            return &m_vulkan_image_view;
+            return m_vulkan_image_view.queryInterface<Interface::RHI::IImageView>();
         }
 
         Base::Interface<Interface::RHI::IImageSampler> getImageSampler() override
         {
-            return &m_vulkan_image_sampler;
+            return m_vulkan_image_sampler.queryInterface<Interface::RHI::IImageSampler>();
         }
     private:
         friend class VulkanDevice;
@@ -87,7 +87,7 @@ namespace Arieo
         VkFormat m_vk_image_format;
         VkImage m_vk_image;
         
-        VulkanImageView m_vulkan_image_view;
-        VulkanImageSampler m_vulkan_image_sampler;
+        Base::Instance<VulkanImageView> m_vulkan_image_view;
+        Base::Instance<VulkanImageSampler> m_vulkan_image_sampler;
     };
 }

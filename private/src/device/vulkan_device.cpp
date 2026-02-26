@@ -206,7 +206,7 @@ namespace Arieo
 
         Core::Logger::trace("swapchain created");
 
-        VulkanSwapchain* vulkan_swapchain = Base::newT<VulkanSwapchain>(
+        Base::Interface<Interface::RHI::ISwapchain> vulkan_swapchain = Base::Interface<Interface::RHI::ISwapchain>::createAs<VulkanSwapchain>(
             m_vk_device, 
             swapchain_create_info, 
             std::move(vk_swapchain)
@@ -218,9 +218,9 @@ namespace Arieo
             std::vector<VkImage> vk_swapchain_image_array;
 
             uint32_t image_count;
-            vkGetSwapchainImagesKHR(m_vk_device, vulkan_swapchain->m_vk_swapchain_khr, &image_count, nullptr);
+            vkGetSwapchainImagesKHR(m_vk_device, vulkan_swapchain.castTo<VulkanSwapchain>()->m_vk_swapchain_khr, &image_count, nullptr);
             vk_swapchain_image_array.resize(image_count);
-            vkGetSwapchainImagesKHR(m_vk_device, vulkan_swapchain->m_vk_swapchain_khr, &image_count, vk_swapchain_image_array.data());           
+            vkGetSwapchainImagesKHR(m_vk_device, vulkan_swapchain.castTo<VulkanSwapchain>()->m_vk_swapchain_khr, &image_count, vk_swapchain_image_array.data());           
             Core::Logger::trace("swapchain image retrieved {}", image_count);
 
             for(VkImage& vk_swapchain_image : vk_swapchain_image_array)
@@ -254,7 +254,7 @@ namespace Arieo
                     }
                 }
                 
-                VulkanImage* vulkan_image = Base::newT<VulkanImage>(    
+                Base::Interface<Interface::RHI::IImage> vulkan_image = Base::Interface<Interface::RHI::IImage>::createAs<VulkanImage>(
                     std::move(vk_swapchain_image),
                     std::move(vk_swapchain_image_view),
                     VK_NULL_HANDLE, 
@@ -264,10 +264,10 @@ namespace Arieo
                     swapchain_create_info.imageFormat
                 );
 
-                vulkan_swapchain->m_image_resource_array.emplace_back(
+                vulkan_swapchain.castTo<VulkanSwapchain>()->m_image_resource_array.emplace_back(
                     vulkan_image
                 );
-                vulkan_swapchain->m_image_view_array.emplace_back(vulkan_image->getImageView());
+                vulkan_swapchain.castTo<VulkanSwapchain>()->m_image_view_array.emplace_back(vulkan_image->getImageView());
 
                 Core::Logger::trace("swapchain image view created");
             }
@@ -285,12 +285,12 @@ namespace Arieo
         {
             VulkanImage* vulkan_swapchain_image = swapchain_image.castTo<VulkanImage>();
             // Destroy image view.
-            vkDestroyImageView(m_vk_device, vulkan_swapchain_image->m_vulkan_image_view.m_vk_image_view, nullptr);
-            Base::deleteT(vulkan_swapchain_image);
+            vkDestroyImageView(m_vk_device, vulkan_swapchain_image->m_vulkan_image_view->m_vk_image_view, nullptr);
+            swapchain_image.destroyAs<VulkanImage>();
         }
 
         vkDestroySwapchainKHR(m_vk_device, vulkan_swapchain->m_vk_swapchain_khr, nullptr);
-        Base::deleteT(vulkan_swapchain);
+        swapchain.destroyAs<VulkanSwapchain>();
         return;
     }
 
@@ -935,8 +935,8 @@ namespace Arieo
     void VulkanDevice::destroyImage(Base::Interface<Interface::RHI::IImage> image)
     {
         VulkanImage* vulkan_image = image.castTo<VulkanImage>();
-        vkDestroySampler(m_vk_device, vulkan_image->m_vulkan_image_sampler.m_vk_image_sampler, nullptr);
-        vkDestroyImageView(m_vk_device, vulkan_image->m_vulkan_image_view.m_vk_image_view, nullptr);
+        vkDestroySampler(m_vk_device, vulkan_image->m_vulkan_image_sampler->m_vk_image_sampler, nullptr);
+        vkDestroyImageView(m_vk_device, vulkan_image->m_vulkan_image_view->m_vk_image_view, nullptr);
         vmaDestroyImage(m_vma_allocator, vulkan_image->m_vk_image, vulkan_image->m_vma_allocation);
         image.destroyAs<VulkanImage>();
     }

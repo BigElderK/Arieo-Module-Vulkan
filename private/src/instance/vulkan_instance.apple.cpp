@@ -27,7 +27,7 @@ namespace Arieo
         extension_names.emplace_back("VK_KHR_portability_subset");
     }
 
-    Base::Interface<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::Interface<Interface::Window::IWindow> window)
+    Base::Interface<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::Interface<Interface::Window::IWindowManager> window_manager, Base::Interface<Interface::Window::IWindow> window)
     {
         VkSurfaceKHR surface;
 

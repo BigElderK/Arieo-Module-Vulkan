@@ -23,12 +23,12 @@ namespace Arieo
 
     }
 
-    Base::Interface<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::Interface<Interface::Window::IWindow> window)
+    Base::Interface<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::Interface<Interface::Window::IWindowManager> window_manager, Base::Interface<Interface::Window::IWindow> window)
     {
         VkWin32SurfaceCreateInfoKHR create_info{};
 
         create_info.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-        create_info.hinstance = reinterpret_cast<HMODULE>(window->getWindowManager()->getDisplay());
+        create_info.hinstance = reinterpret_cast<HMODULE>(window_manager->getDisplay());
         create_info.hwnd = reinterpret_cast<HWND>(window->getWindowHandle());
 
         VkSurfaceKHR surface;

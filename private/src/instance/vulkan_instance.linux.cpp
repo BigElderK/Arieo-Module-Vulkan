@@ -22,13 +22,13 @@ namespace Arieo
 
     }
 
-    Base::Interface<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::Interface<Interface::Window::IWindow> window)
+    Base::Interface<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::Interface<Interface::Window::IWindowManager> window_manager, Base::Interface<Interface::Window::IWindow> window)
     {
         if(window->getWindowPlatform() == Base::MakeStringID("x11"))
         {
             VkXlibSurfaceCreateInfoKHR create_info{};
             create_info.sType = VK_STRUCTURE_TYPE_XLIB_SURFACE_CREATE_INFO_KHR;
-            create_info.dpy = reinterpret_cast<Display*>(window->getWindowManager()->getDisplay());
+            create_info.dpy = reinterpret_cast<Display*>(window_manager->getDisplay());
             create_info.window = reinterpret_cast<Window>(window->getWindowHandle());
 
             VkSurfaceKHR surface;

@@ -13,7 +13,7 @@ namespace Arieo
         void finalize();        
         
         std::vector<std::string>& getHardwareInfomations() override;
-        Base::Interface<Interface::RHI::IRenderSurface> createSurface(Base::Interface<Interface::Window::IWindow> window) override;
+        Base::Interface<Interface::RHI::IRenderSurface> createSurface(Base::Interface<Interface::Window::IWindowManager> window_manager, Base::Interface<Interface::Window::IWindow> window) override;
         void destroySurface(Base::Interface<Interface::RHI::IRenderSurface>) override;
 
         Base::Interface<Interface::RHI::IRenderDevice> createDevice(size_t hardware_index, Base::Interface<Interface::RHI::IRenderSurface> surface) override;

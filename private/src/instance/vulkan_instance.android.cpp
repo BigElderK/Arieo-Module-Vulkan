@@ -20,7 +20,7 @@ namespace Arieo
     {
     }
 
-    Base::Interface<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::Interface<Interface::Window::IWindow> window)
+    Base::Interface<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::Interface<Interface::Window::IWindowManager> window_manager, Base::Interface<Interface::Window::IWindow> window)
     {
         // Get the ANativeWindow handle from the IWindow interface
         ANativeWindow* native_window = reinterpret_cast<ANativeWindow*>(window->getWindowHandle());

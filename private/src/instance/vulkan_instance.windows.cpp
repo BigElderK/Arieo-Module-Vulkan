@@ -23,7 +23,7 @@ namespace Arieo
 
     }
 
-    Base::Interface<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::Interface<Interface::Window::IWindowManager> window_manager, Base::Interface<Interface::Window::IWindow> window)
+    Base::Interop<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::Interop<Interface::Window::IWindowManager> window_manager, Base::Interop<Interface::Window::IWindow> window)
     {
         VkWin32SurfaceCreateInfoKHR create_info{};
 
@@ -39,7 +39,7 @@ namespace Arieo
             return nullptr;
         }
 
-        return Base::Interface<Interface::RHI::IRenderSurface>::createAs<VulkanSurface>(std::move(surface), window);
+        return Base::Interop<Interface::RHI::IRenderSurface>::createAs<VulkanSurface>(std::move(surface), window);
     }
 }
 #endif

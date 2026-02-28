@@ -8,11 +8,11 @@
 
 namespace Arieo
 {
-    void VulkanPresentCommandQueue::present(Base::InteropOld<Interface::RHI::ISwapchain> swapchain, std::uint32_t swapchain_image_index, Base::InteropOld<Interface::RHI::IFramebuffer> framebuffer, Base::InteropOld<Interface::RHI::ISemaphore> signal_semaphore)
+    void VulkanPresentCommandQueue::present(Base::Interop::RawRef<Interface::RHI::ISwapchain> swapchain, std::uint32_t swapchain_image_index, Base::Interop::RawRef<Interface::RHI::IFramebuffer> framebuffer, Base::Interop::RawRef<Interface::RHI::ISemaphore> signal_semaphore)
     {
-        VulkanSemaphore* vulkan_signal_semaphore = signal_semaphore.castTo<VulkanSemaphore>();
-        // VulkanFramebuffer* vulkan_framebuffer = framebuffer.castTo<VulkanFramebuffer>();
-        VulkanSwapchain* vulkan_swapchain = swapchain.castTo<VulkanSwapchain>();
+        VulkanSemaphore* vulkan_signal_semaphore = signal_semaphore.castToInstance<VulkanSemaphore>();
+        // VulkanFramebuffer* vulkan_framebuffer = framebuffer.castToInstance<VulkanFramebuffer>();
+        VulkanSwapchain* vulkan_swapchain = swapchain.castToInstance<VulkanSwapchain>();
 
         VkPresentInfoKHR present_info{};
         present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
@@ -30,3 +30,7 @@ namespace Arieo
         vkQueuePresentKHR(m_vk_queue, &present_info); 
     }
 }
+
+
+
+

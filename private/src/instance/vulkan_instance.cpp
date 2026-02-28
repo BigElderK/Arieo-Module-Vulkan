@@ -230,14 +230,14 @@ namespace Arieo
         return m_hardware_information_array;
     }
 
-    void VulkanInstance::destroySurface(Base::InteropOld<Interface::RHI::IRenderSurface> surface)
+    void VulkanInstance::destroySurface(Base::Interop::RawRef<Interface::RHI::IRenderSurface> surface)
     {
-        VulkanSurface* vulkan_surface = surface.castTo<VulkanSurface>();
+        VulkanSurface* vulkan_surface = surface.castToInstance<VulkanSurface>();
         vkDestroySurfaceKHR(m_vk_instance, vulkan_surface->m_vk_surface_khr, nullptr);
         Base::deleteT(vulkan_surface);
     }
 
-    Base::InteropOld<Interface::RHI::IRenderDevice> VulkanInstance::createDevice(size_t hardware_index, Base::InteropOld<Interface::RHI::IRenderSurface> surface)
+    Base::Interop::RawRef<Interface::RHI::IRenderDevice> VulkanInstance::createDevice(size_t hardware_index, Base::Interop::RawRef<Interface::RHI::IRenderSurface> surface)
     {
         uint32_t vk_phys_device_count = 0;
         vkEnumeratePhysicalDevices(m_vk_instance, &vk_phys_device_count, nullptr);
@@ -268,7 +268,7 @@ namespace Arieo
 
                 for (uint32_t i = 0; i < queue_family_count; i++) 
                 {
-                    VulkanSurface* vulkan_surface = surface.castTo<VulkanSurface>();
+                    VulkanSurface* vulkan_surface = surface.castToInstance<VulkanSurface>();
                     if(vulkan_surface == nullptr)
                     {
                         Core::Logger::fatal("Surface is invalid.");
@@ -413,7 +413,7 @@ namespace Arieo
             }
         }
 
-        return Base::InteropOld<Interface::RHI::IRenderDevice>::createAs<VulkanDevice>(
+        return Base::Interop::RawRef<Interface::RHI::IRenderDevice>::createAs<VulkanDevice>(
             std::move(vk_selected_phys_device),
             std::move(vk_device),
             std::move(vma_allocator),
@@ -424,13 +424,17 @@ namespace Arieo
         );
     }
 
-    void VulkanInstance::destroyDevice(Base::InteropOld<Interface::RHI::IRenderDevice> device)
+    void VulkanInstance::destroyDevice(Base::Interop::RawRef<Interface::RHI::IRenderDevice> device)
     {
-        VulkanDevice* vulkan_device = device.castTo<VulkanDevice>();
+        VulkanDevice* vulkan_device = device.castToInstance<VulkanDevice>();
 
         vmaDestroyAllocator(vulkan_device->m_vma_allocator);
 
         vkDestroyDevice(vulkan_device->m_vk_device, nullptr);
-        Base::InteropOld<Interface::RHI::IRenderDevice>::destroyAs<VulkanDevice>(std::move(device));
+        Base::Interop::RawRef<Interface::RHI::IRenderDevice>::destroyAs<VulkanDevice>(std::move(device));
     }
 }
+
+
+
+

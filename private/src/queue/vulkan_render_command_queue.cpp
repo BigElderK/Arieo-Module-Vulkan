@@ -8,12 +8,12 @@
 
 namespace Arieo
 {
-    void VulkanRenderCommandQueue::submitCommand(Base::InteropOld<Interface::RHI::ICommandBuffer> command_buffer, Base::InteropOld<Interface::RHI::IFence> fence, Base::InteropOld<Interface::RHI::ISemaphore> wait_semaphore, Base::InteropOld<Interface::RHI::ISemaphore> signal_semaphore)
+    void VulkanRenderCommandQueue::submitCommand(Base::Interop::RawRef<Interface::RHI::ICommandBuffer> command_buffer, Base::Interop::RawRef<Interface::RHI::IFence> fence, Base::Interop::RawRef<Interface::RHI::ISemaphore> wait_semaphore, Base::Interop::RawRef<Interface::RHI::ISemaphore> signal_semaphore)
     {
-        VulkanCommandBuffer* vulkan_command_buffer = command_buffer.castTo<VulkanCommandBuffer>();
-        VulkanSemaphore* vulkan_wait_semaphore = wait_semaphore.castTo<VulkanSemaphore>();
-        VulkanSemaphore* vulkan_signal_semaphore = signal_semaphore.castTo<VulkanSemaphore>();
-        VulkanFence* vulkan_fence = fence.castTo<VulkanFence>();
+        VulkanCommandBuffer* vulkan_command_buffer = command_buffer.castToInstance<VulkanCommandBuffer>();
+        VulkanSemaphore* vulkan_wait_semaphore = wait_semaphore.castToInstance<VulkanSemaphore>();
+        VulkanSemaphore* vulkan_signal_semaphore = signal_semaphore.castToInstance<VulkanSemaphore>();
+        VulkanFence* vulkan_fence = fence.castToInstance<VulkanFence>();
 
         VkSubmitInfo submit_info{};
         submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -39,10 +39,10 @@ namespace Arieo
         }
     }    
 
-    void VulkanRenderCommandQueue::submitCommand(Base::InteropOld<Interface::RHI::ICommandBuffer> command_buffer)
+    void VulkanRenderCommandQueue::submitCommand(Base::Interop::RawRef<Interface::RHI::ICommandBuffer> command_buffer)
     {
         VkSubmitInfo submit_info{};
-        VulkanCommandBuffer* vulkan_command_buffer = command_buffer.castTo<VulkanCommandBuffer>();
+        VulkanCommandBuffer* vulkan_command_buffer = command_buffer.castToInstance<VulkanCommandBuffer>();
         submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
         submit_info.commandBufferCount = 1;
         submit_info.pCommandBuffers = &vulkan_command_buffer->m_vk_command_buffer;
@@ -54,3 +54,7 @@ namespace Arieo
         }
     }
 }
+
+
+
+

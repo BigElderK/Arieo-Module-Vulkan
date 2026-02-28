@@ -23,3 +23,7 @@ namespace Arieo
         VkSemaphore m_vk_semaphore;
     };
 }
+
+
+
+

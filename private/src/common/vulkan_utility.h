@@ -10,3 +10,7 @@ namespace Arieo
         static const char* covertVkResultToString(VkResult result);
     };
 }
+
+
+
+

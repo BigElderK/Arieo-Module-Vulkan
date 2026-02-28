@@ -31,3 +31,7 @@ namespace Arieo
         VkFence m_vk_fence;
     };
 }
+
+
+
+

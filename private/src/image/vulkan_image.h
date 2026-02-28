@@ -65,12 +65,12 @@ namespace Arieo
             return m_vma_allocation_info.size;
         }
 
-        Base::InteropOld<Interface::RHI::IImageView> getImageView() override
+        Base::Interop::RawRef<Interface::RHI::IImageView> getImageView() override
         {
             return m_vulkan_image_view.queryInterface<Interface::RHI::IImageView>();
         }
 
-        Base::InteropOld<Interface::RHI::IImageSampler> getImageSampler() override
+        Base::Interop::RawRef<Interface::RHI::IImageSampler> getImageSampler() override
         {
             return m_vulkan_image_sampler.queryInterface<Interface::RHI::IImageSampler>();
         }
@@ -91,3 +91,7 @@ namespace Arieo
         Base::Instance<VulkanImageSampler> m_vulkan_image_sampler;
     };
 }
+
+
+
+

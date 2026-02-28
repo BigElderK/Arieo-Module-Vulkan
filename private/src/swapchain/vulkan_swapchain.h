@@ -18,9 +18,9 @@ namespace Arieo
         {
         }
         
-        std::uint32_t acquireNextImageIndex(Base::InteropOld<Interface::RHI::ISemaphore> semaphore) override
+        std::uint32_t acquireNextImageIndex(Base::Interop::RawRef<Interface::RHI::ISemaphore> semaphore) override
         {
-            VulkanSemaphore* vulkan_semaphore = semaphore.castTo<VulkanSemaphore>();
+            VulkanSemaphore* vulkan_semaphore = semaphore.castToInstance<VulkanSemaphore>();
             std::uint32_t image_index = std::numeric_limits<std::uint32_t>::max();
 
             VkResult result = vkAcquireNextImageKHR(
@@ -52,7 +52,7 @@ namespace Arieo
             return image_index;
         }
         
-        std::vector<Base::InteropOld<Interface::RHI::IImageView>>& getImageViews() override
+        std::vector<Base::Interop::RawRef<Interface::RHI::IImageView>>& getImageViews() override
         {
             return m_image_view_array;
         }
@@ -78,7 +78,11 @@ namespace Arieo
         VkDevice& m_vk_device;
         VkSwapchainKHR m_vk_swapchain_khr;
 
-        std::vector<Base::InteropOld<Interface::RHI::IImage>> m_image_resource_array;
-        std::vector<Base::InteropOld<Interface::RHI::IImageView>> m_image_view_array;
+        std::vector<Base::Interop::RawRef<Interface::RHI::IImage>> m_image_resource_array;
+        std::vector<Base::Interop::RawRef<Interface::RHI::IImageView>> m_image_view_array;
     };
 }
+
+
+
+

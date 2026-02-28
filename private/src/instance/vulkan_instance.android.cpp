@@ -20,7 +20,7 @@ namespace Arieo
     {
     }
 
-    Base::InteropOld<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::InteropOld<Interface::Window::IWindowManager> window_manager, Base::InteropOld<Interface::Window::IWindow> window)
+    Base::Interop::RawRef<Interface::RHI::IRenderSurface> VulkanInstance::createSurface(Base::Interop::RawRef<Interface::Window::IWindowManager> window_manager, Base::Interop::RawRef<Interface::Window::IWindow> window)
     {
         // Get the ANativeWindow handle from the IWindow interface
         ANativeWindow* native_window = reinterpret_cast<ANativeWindow*>(window->getWindowHandle());
@@ -45,7 +45,11 @@ namespace Arieo
             return nullptr;
         }
 
-        return Base::InteropOld<Interface::RHI::IRenderSurface>::createAs<VulkanSurface>(std::move(surface), window);
+        return Base::Interop::RawRef<Interface::RHI::IRenderSurface>::createAs<VulkanSurface>(std::move(surface), window);
     }
 }
 #endif
+
+
+
+

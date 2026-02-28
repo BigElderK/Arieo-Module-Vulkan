@@ -95,7 +95,7 @@ namespace Arieo
         {
             VulkanDescriptorSet* vulkan_desc_set = descriptor_set.castTo<VulkanDescriptorSet>();
             vkFreeDescriptorSets(m_vk_device, m_vk_descriptor_pool, 1, &vulkan_desc_set->m_vk_descriptor_set);
-            descriptor_set.destroyAs<VulkanDescriptorSet>();
+            Base::Interop<Interface::RHI::IDescriptorSet>::destroyAs<VulkanDescriptorSet>(std::move(descriptor_set));
         }
     private:
         friend class VulkanDevice;

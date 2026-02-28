@@ -286,11 +286,11 @@ namespace Arieo
             VulkanImage* vulkan_swapchain_image = swapchain_image.castTo<VulkanImage>();
             // Destroy image view.
             vkDestroyImageView(m_vk_device, vulkan_swapchain_image->m_vulkan_image_view->m_vk_image_view, nullptr);
-            swapchain_image.destroyAs<VulkanImage>();
+            Base::Interop<Interface::RHI::IImage>::destroyAs<VulkanImage>(std::move(swapchain_image));
         }
 
         vkDestroySwapchainKHR(m_vk_device, vulkan_swapchain->m_vk_swapchain_khr, nullptr);
-        swapchain.destroyAs<VulkanSwapchain>();
+        Base::Interop<Interface::RHI::ISwapchain>::destroyAs<VulkanSwapchain>(std::move(swapchain));
         return;
     }
 
@@ -333,7 +333,7 @@ namespace Arieo
     {
         VulkanFramebuffer* vulkan_framebuffer = framebuffer.castTo<VulkanFramebuffer>();
         vkDestroyFramebuffer(m_vk_device, vulkan_framebuffer->m_vk_framebuffer, nullptr);
-        framebuffer.destroyAs<VulkanFramebuffer>();
+        Base::Interop<Interface::RHI::IFramebuffer>::destroyAs<VulkanFramebuffer>(std::move(framebuffer));
     }
 
     Base::Interop<Interface::RHI::IShader> VulkanDevice::createShader(void* buf, size_t buf_size)
@@ -360,7 +360,7 @@ namespace Arieo
         VulkanShader* vulkan_shader = shader.castTo<VulkanShader>();
         vkDestroyShaderModule(m_vk_device, vulkan_shader->m_vk_shader_module, nullptr);
 
-        shader.destroyAs<VulkanShader>();
+        Base::Interop<Interface::RHI::IShader>::destroyAs<VulkanShader>(std::move(shader));
     }
 
     Base::Interop<Interface::RHI::IPipeline> VulkanDevice::createPipeline(
@@ -683,7 +683,7 @@ namespace Arieo
         vkDestroyPipelineLayout(m_vk_device, vulkan_pipeline->m_vk_pipeline_layout, nullptr);
         vkDestroyPipeline(m_vk_device, vulkan_pipeline->m_vk_pipeline, nullptr);
 
-        pipeline.destroyAs<VulkanPipeline>();
+        Base::Interop<Interface::RHI::IPipeline>::destroyAs<VulkanPipeline>(std::move(pipeline));
     }
     
     Base::Interop<Interface::RHI::IFence> VulkanDevice::createFence()
@@ -706,7 +706,7 @@ namespace Arieo
     {
         VulkanFence* vulkan_fence = fence.castTo<VulkanFence>();       
         vkDestroyFence(m_vk_device, vulkan_fence->m_vk_fence, nullptr);
-        fence.destroyAs<VulkanFence>();
+        Base::Interop<Interface::RHI::IFence>::destroyAs<VulkanFence>(std::move(fence));
     }
 
     Base::Interop<Interface::RHI::ISemaphore> VulkanDevice::createSemaphore()
@@ -728,7 +728,7 @@ namespace Arieo
     {
         VulkanSemaphore* vulkan_semaphore = semaphore.castTo<VulkanSemaphore>();       
         vkDestroySemaphore(m_vk_device, vulkan_semaphore->m_vk_semaphore, nullptr);
-        semaphore.destroyAs<VulkanSemaphore>();
+        Base::Interop<Interface::RHI::ISemaphore>::destroyAs<VulkanSemaphore>(std::move(semaphore));
     }
 
     Base::Interop<Interface::RHI::IBuffer> VulkanDevice::createBuffer(
@@ -763,7 +763,7 @@ namespace Arieo
     {
         VulkanBuffer* vulkan_buffer = buffer.castTo<VulkanBuffer>();
         vmaDestroyBuffer(m_vma_allocator, vulkan_buffer->m_vk_buffer, vulkan_buffer->m_vma_allocation);
-        buffer.destroyAs<VulkanBuffer>();
+        Base::Interop<Interface::RHI::IBuffer>::destroyAs<VulkanBuffer>(std::move(buffer));
     }
 
     Base::Interop<Interface::RHI::IDescriptorPool> VulkanDevice::createDescriptorPool(size_t capacity)
@@ -798,7 +798,7 @@ namespace Arieo
     {
         VulkanDescriptorPool* vulkan_descriptor_pool = descriptor_pool.castTo<VulkanDescriptorPool>();
         vkDestroyDescriptorPool(m_vk_device, vulkan_descriptor_pool->m_vk_descriptor_pool, nullptr);
-        descriptor_pool.destroyAs<VulkanDescriptorPool>();
+        Base::Interop<Interface::RHI::IDescriptorPool>::destroyAs<VulkanDescriptorPool>(std::move(descriptor_pool));
     }
 
     Base::Interop<Interface::RHI::IImage> VulkanDevice::createImage(
@@ -938,7 +938,7 @@ namespace Arieo
         vkDestroySampler(m_vk_device, vulkan_image->m_vulkan_image_sampler->m_vk_image_sampler, nullptr);
         vkDestroyImageView(m_vk_device, vulkan_image->m_vulkan_image_view->m_vk_image_view, nullptr);
         vmaDestroyImage(m_vma_allocator, vulkan_image->m_vk_image, vulkan_image->m_vma_allocation);
-        image.destroyAs<VulkanImage>();
+        Base::Interop<Interface::RHI::IImage>::destroyAs<VulkanImage>(std::move(image));
     }
 
     void VulkanDevice::waitIdle()

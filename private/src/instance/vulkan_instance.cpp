@@ -431,6 +431,6 @@ namespace Arieo
         vmaDestroyAllocator(vulkan_device->m_vma_allocator);
 
         vkDestroyDevice(vulkan_device->m_vk_device, nullptr);
-        device.destroyAs<VulkanDevice>();
+        Base::Interop<Interface::RHI::IRenderDevice>::destroyAs<VulkanDevice>(std::move(device));
     }
 }

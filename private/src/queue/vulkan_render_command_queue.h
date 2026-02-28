@@ -38,7 +38,7 @@ namespace Arieo
             VulkanCommandPool* vulkan_command_pool = command_pool.castTo<VulkanCommandPool>();
             vkDestroyCommandPool(m_vk_device, vulkan_command_pool->m_vk_command_pool, nullptr);
             
-            return command_pool.destroyAs<VulkanCommandPool>();
+            return Base::Interop<Interface::RHI::ICommandPool>::destroyAs<VulkanCommandPool>(std::move(command_pool));
         }
 
         void waitIdle() override

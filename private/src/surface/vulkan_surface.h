@@ -1,6 +1,6 @@
 #pragma once
 #include "interface/rhi/rhi.h"
-#include "base/interface/interface.h"
+#include "base/interop/interface.h"
 #include <vulkan.h>
 namespace Arieo
 {

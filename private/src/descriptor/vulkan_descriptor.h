@@ -15,7 +15,7 @@ namespace Arieo
         {
         }
 
-        void bindBuffer(size_t bind_index, Base::Interop<Interface::RHI::IBuffer> buffer, size_t offset, size_t size) override
+        void bindBuffer(size_t bind_index, Base::InteropOld<Interface::RHI::IBuffer> buffer, size_t offset, size_t size) override
         {
             VulkanBuffer* vulkan_buffer = buffer.castTo<VulkanBuffer>();
             VkDescriptorBufferInfo bufferInfo{};
@@ -35,7 +35,7 @@ namespace Arieo
             vkUpdateDescriptorSets(m_vk_device, 1, &descriptor_write, 0, nullptr);
         }
 
-        void bindImage(size_t bind_index, Base::Interop<Interface::RHI::IImage> image) override
+        void bindImage(size_t bind_index, Base::InteropOld<Interface::RHI::IImage> image) override
         {
             VulkanImage* vulkan_image = image.castTo<VulkanImage>();
             VkDescriptorImageInfo image_info{};
@@ -72,7 +72,7 @@ namespace Arieo
 
         }
 
-        Base::Interop<Interface::RHI::IDescriptorSet> allocateDescriptorSet(Base::Interop<Interface::RHI::IPipeline> pipeline)
+        Base::InteropOld<Interface::RHI::IDescriptorSet> allocateDescriptorSet(Base::InteropOld<Interface::RHI::IPipeline> pipeline)
         {
             VulkanPipeline* vulkan_pipeline = pipeline.castTo<VulkanPipeline>();
             
@@ -88,14 +88,14 @@ namespace Arieo
             {
                 Core::Logger::error("Create allocate descriptor sets failed: {}", VulkanUtility::covertVkResultToString(result));
             }
-            return Base::Interop<Interface::RHI::IDescriptorSet>::createAs<VulkanDescriptorSet>(m_vk_device, std::move(vk_descriptor_set));
+            return Base::InteropOld<Interface::RHI::IDescriptorSet>::createAs<VulkanDescriptorSet>(m_vk_device, std::move(vk_descriptor_set));
         }
 
-        void freeDescriptorSet(Base::Interop<Interface::RHI::IDescriptorSet> descriptor_set)
+        void freeDescriptorSet(Base::InteropOld<Interface::RHI::IDescriptorSet> descriptor_set)
         {
             VulkanDescriptorSet* vulkan_desc_set = descriptor_set.castTo<VulkanDescriptorSet>();
             vkFreeDescriptorSets(m_vk_device, m_vk_descriptor_pool, 1, &vulkan_desc_set->m_vk_descriptor_set);
-            Base::Interop<Interface::RHI::IDescriptorSet>::destroyAs<VulkanDescriptorSet>(std::move(descriptor_set));
+            Base::InteropOld<Interface::RHI::IDescriptorSet>::destroyAs<VulkanDescriptorSet>(std::move(descriptor_set));
         }
     private:
         friend class VulkanDevice;

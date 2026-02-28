@@ -16,7 +16,7 @@ namespace Arieo
         {
         }
 
-        Base::Interop<Interface::RHI::ICommandPool> createCommandPool() override
+        Base::InteropOld<Interface::RHI::ICommandPool> createCommandPool() override
         {
             VkCommandPoolCreateInfo pool_info{};
             pool_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
@@ -30,15 +30,15 @@ namespace Arieo
                 return nullptr;
             }
 
-            return Base::Interop<Interface::RHI::ICommandPool>::createAs<VulkanCommandPool>(m_vk_device, std::move(vk_command_pool));
+            return Base::InteropOld<Interface::RHI::ICommandPool>::createAs<VulkanCommandPool>(m_vk_device, std::move(vk_command_pool));
         }
 
-        void destroyCommandPool(Base::Interop<Interface::RHI::ICommandPool> command_pool) override
+        void destroyCommandPool(Base::InteropOld<Interface::RHI::ICommandPool> command_pool) override
         {
             VulkanCommandPool* vulkan_command_pool = command_pool.castTo<VulkanCommandPool>();
             vkDestroyCommandPool(m_vk_device, vulkan_command_pool->m_vk_command_pool, nullptr);
             
-            return Base::Interop<Interface::RHI::ICommandPool>::destroyAs<VulkanCommandPool>(std::move(command_pool));
+            return Base::InteropOld<Interface::RHI::ICommandPool>::destroyAs<VulkanCommandPool>(std::move(command_pool));
         }
 
         void waitIdle() override
@@ -46,8 +46,8 @@ namespace Arieo
             vkQueueWaitIdle(m_vk_queue);
         }
 
-        void submitCommand(Base::Interop<Interface::RHI::ICommandBuffer> command_buffer, Base::Interop<Interface::RHI::IFence> fence, Base::Interop<Interface::RHI::ISemaphore> wait_semaphore, Base::Interop<Interface::RHI::ISemaphore> signal_semaphore) override;
-        void submitCommand(Base::Interop<Interface::RHI::ICommandBuffer> command_buffer) override;
+        void submitCommand(Base::InteropOld<Interface::RHI::ICommandBuffer> command_buffer, Base::InteropOld<Interface::RHI::IFence> fence, Base::InteropOld<Interface::RHI::ISemaphore> wait_semaphore, Base::InteropOld<Interface::RHI::ISemaphore> signal_semaphore) override;
+        void submitCommand(Base::InteropOld<Interface::RHI::ICommandBuffer> command_buffer) override;
     private:
         std::uint32_t m_queue_family_index;
         VkDevice& m_vk_device;

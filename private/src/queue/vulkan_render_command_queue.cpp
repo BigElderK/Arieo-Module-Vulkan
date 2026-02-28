@@ -8,7 +8,7 @@
 
 namespace Arieo
 {
-    void VulkanRenderCommandQueue::submitCommand(Base::Interop<Interface::RHI::ICommandBuffer> command_buffer, Base::Interop<Interface::RHI::IFence> fence, Base::Interop<Interface::RHI::ISemaphore> wait_semaphore, Base::Interop<Interface::RHI::ISemaphore> signal_semaphore)
+    void VulkanRenderCommandQueue::submitCommand(Base::InteropOld<Interface::RHI::ICommandBuffer> command_buffer, Base::InteropOld<Interface::RHI::IFence> fence, Base::InteropOld<Interface::RHI::ISemaphore> wait_semaphore, Base::InteropOld<Interface::RHI::ISemaphore> signal_semaphore)
     {
         VulkanCommandBuffer* vulkan_command_buffer = command_buffer.castTo<VulkanCommandBuffer>();
         VulkanSemaphore* vulkan_wait_semaphore = wait_semaphore.castTo<VulkanSemaphore>();
@@ -39,7 +39,7 @@ namespace Arieo
         }
     }    
 
-    void VulkanRenderCommandQueue::submitCommand(Base::Interop<Interface::RHI::ICommandBuffer> command_buffer)
+    void VulkanRenderCommandQueue::submitCommand(Base::InteropOld<Interface::RHI::ICommandBuffer> command_buffer)
     {
         VkSubmitInfo submit_info{};
         VulkanCommandBuffer* vulkan_command_buffer = command_buffer.castTo<VulkanCommandBuffer>();

@@ -10,19 +10,19 @@ namespace Arieo
     public:
         friend class VulkanInstance;
         friend class VulkanDevice;
-        VulkanSurface(VkSurfaceKHR&& vk_surface_khr, Base::Interop<Interface::Window::IWindow> attached_window)
+        VulkanSurface(VkSurfaceKHR&& vk_surface_khr, Base::InteropOld<Interface::Window::IWindow> attached_window)
             : m_vk_surface_khr(std::move(vk_surface_khr)),
             m_attached_window(attached_window)
         {
         }
 
-        Base::Interop<Interface::Window::IWindow> getAttachedWindow() override
+        Base::InteropOld<Interface::Window::IWindow> getAttachedWindow() override
         {
             return m_attached_window;
         }
     private:
         VkSurfaceKHR m_vk_surface_khr;
-        Base::Interop<Interface::Window::IWindow> m_attached_window = nullptr;
+        Base::InteropOld<Interface::Window::IWindow> m_attached_window = nullptr;
         Base::Math::Vector<std::uint32_t, 2> m_extent;
     };
 }

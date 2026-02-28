@@ -34,41 +34,41 @@ namespace Arieo
 
         Interface::RHI::Format findSupportedFormat(const std::vector<Interface::RHI::Format>& candidate_formats, Interface::RHI::ImageTiling, Interface::RHI::FormatFeatureFlags) override;
 
-        Base::Interop<Interface::RHI::IRenderCommandQueue> getGraphicsCommandQueue() override
+        Base::InteropOld<Interface::RHI::IRenderCommandQueue> getGraphicsCommandQueue() override
         {
             return m_graphics_queue.queryInterface<Interface::RHI::IRenderCommandQueue>();
         }
-        Base::Interop<Interface::RHI::IPresentCommandQueue> getPresentCommandQueue() override
+        Base::InteropOld<Interface::RHI::IPresentCommandQueue> getPresentCommandQueue() override
         {
             return m_present_queue.queryInterface<Interface::RHI::IPresentCommandQueue>();
         }
 
-        Base::Interop<Interface::RHI::ISwapchain> createSwapchain(Base::Interop<Interface::RHI::IRenderSurface>) override;
-        void destroySwapchain(Base::Interop<Interface::RHI::ISwapchain>) override;
+        Base::InteropOld<Interface::RHI::ISwapchain> createSwapchain(Base::InteropOld<Interface::RHI::IRenderSurface>) override;
+        void destroySwapchain(Base::InteropOld<Interface::RHI::ISwapchain>) override;
 
-        Base::Interop<Interface::RHI::IFramebuffer> createFramebuffer(Base::Interop<Interface::RHI::IPipeline>, Base::Interop<Interface::RHI::ISwapchain> swapchain, std::vector<Base::Interop<Interface::RHI::IImageView>>& attachment_array) override;
-        void destroyFramebuffer(Base::Interop<Interface::RHI::IFramebuffer>) override;
+        Base::InteropOld<Interface::RHI::IFramebuffer> createFramebuffer(Base::InteropOld<Interface::RHI::IPipeline>, Base::InteropOld<Interface::RHI::ISwapchain> swapchain, std::vector<Base::InteropOld<Interface::RHI::IImageView>>& attachment_array) override;
+        void destroyFramebuffer(Base::InteropOld<Interface::RHI::IFramebuffer>) override;
 
-        Base::Interop<Interface::RHI::IShader> createShader(void* buf, size_t buf_size) override;
-        void destroyShader(Base::Interop<Interface::RHI::IShader>) override;
+        Base::InteropOld<Interface::RHI::IShader> createShader(void* buf, size_t buf_size) override;
+        void destroyShader(Base::InteropOld<Interface::RHI::IShader>) override;
 
-        Base::Interop<Interface::RHI::IPipeline> createPipeline(Base::Interop<Interface::RHI::IShader> vert_shader, Base::Interop<Interface::RHI::IShader> frag_shader, Base::Interop<Interface::RHI::IImageView> target_color_attachment, Base::Interop<Interface::RHI::IImageView> target_depth_attachment) override;
-        void destroyPipeline(Base::Interop<Interface::RHI::IPipeline>) override;
+        Base::InteropOld<Interface::RHI::IPipeline> createPipeline(Base::InteropOld<Interface::RHI::IShader> vert_shader, Base::InteropOld<Interface::RHI::IShader> frag_shader, Base::InteropOld<Interface::RHI::IImageView> target_color_attachment, Base::InteropOld<Interface::RHI::IImageView> target_depth_attachment) override;
+        void destroyPipeline(Base::InteropOld<Interface::RHI::IPipeline>) override;
 
-        Base::Interop<Interface::RHI::IFence> createFence() override;
-        void destroyFence(Base::Interop<Interface::RHI::IFence>) override;
+        Base::InteropOld<Interface::RHI::IFence> createFence() override;
+        void destroyFence(Base::InteropOld<Interface::RHI::IFence>) override;
 
-        Base::Interop<Interface::RHI::ISemaphore> createSemaphore() override;
-        void destroySemaphore(Base::Interop<Interface::RHI::ISemaphore>) override;
+        Base::InteropOld<Interface::RHI::ISemaphore> createSemaphore() override;
+        void destroySemaphore(Base::InteropOld<Interface::RHI::ISemaphore>) override;
 
-        Base::Interop<Interface::RHI::IBuffer> createBuffer(size_t size, Interface::RHI::BufferUsageBitFlags buffer_usage, Interface::RHI::BufferAllocationFlags allocation_flag, Interface::RHI::MemoryUsage memory_usage) override;
-        void destroyBuffer(Base::Interop<Interface::RHI::IBuffer>) override;
+        Base::InteropOld<Interface::RHI::IBuffer> createBuffer(size_t size, Interface::RHI::BufferUsageBitFlags buffer_usage, Interface::RHI::BufferAllocationFlags allocation_flag, Interface::RHI::MemoryUsage memory_usage) override;
+        void destroyBuffer(Base::InteropOld<Interface::RHI::IBuffer>) override;
 
-        Base::Interop<Interface::RHI::IDescriptorPool> createDescriptorPool(size_t capacity) override;
-        void destroyDescriptorPool(Base::Interop<Interface::RHI::IDescriptorPool>) override;
+        Base::InteropOld<Interface::RHI::IDescriptorPool> createDescriptorPool(size_t capacity) override;
+        void destroyDescriptorPool(Base::InteropOld<Interface::RHI::IDescriptorPool>) override;
 
-        Base::Interop<Interface::RHI::IImage> createImage(std::uint32_t width, std::uint32_t height, Interface::RHI::Format format, Interface::RHI::ImageAspectFlags aspect, Interface::RHI::ImageTiling tiling, Interface::RHI::ImageUsageFlags usage, Interface::RHI::MemoryUsage mem_usage) override;
-        void destroyImage(Base::Interop<Interface::RHI::IImage>) override;
+        Base::InteropOld<Interface::RHI::IImage> createImage(std::uint32_t width, std::uint32_t height, Interface::RHI::Format format, Interface::RHI::ImageAspectFlags aspect, Interface::RHI::ImageTiling tiling, Interface::RHI::ImageUsageFlags usage, Interface::RHI::MemoryUsage mem_usage) override;
+        void destroyImage(Base::InteropOld<Interface::RHI::IImage>) override;
 
         void waitIdle() override;
     private:

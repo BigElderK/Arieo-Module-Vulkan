@@ -65,12 +65,12 @@ namespace Arieo
             return m_vma_allocation_info.size;
         }
 
-        Base::Interop<Interface::RHI::IImageView> getImageView() override
+        Base::InteropOld<Interface::RHI::IImageView> getImageView() override
         {
             return m_vulkan_image_view.queryInterface<Interface::RHI::IImageView>();
         }
 
-        Base::Interop<Interface::RHI::IImageSampler> getImageSampler() override
+        Base::InteropOld<Interface::RHI::IImageSampler> getImageSampler() override
         {
             return m_vulkan_image_sampler.queryInterface<Interface::RHI::IImageSampler>();
         }

@@ -11,23 +11,24 @@ namespace Arieo
 
         static struct DllLoader
         {
-            Base::Instance<VulkanInstance> vulkan_instance;
+            VulkanInstance vulkan_instance;
+            Base::Interop::SharedRef<Interface::RHI::IRenderInstance> vulkan_render_instance = Base::Interop::makePersistentShared<Interface::RHI::IRenderInstance>(vulkan_instance);
 
             DllLoader()
             {
-                vulkan_instance->initialize();
-                Core::ModuleManager::registerInstance<Interface::RHI::IRenderInstance, VulkanInstance>(
-                    "vulkan_instance", 
-                    vulkan_instance
+                vulkan_instance.initialize();
+                Core::ModuleManager::registerInterface<Interface::RHI::IRenderInstance>(
+                    "vulkan_instance",
+                    vulkan_render_instance
                 );
             }
 
             ~DllLoader()
             {
-                Core::ModuleManager::unregisterInstance<Interface::RHI::IRenderInstance, VulkanInstance>(
-                    vulkan_instance
+                Core::ModuleManager::unregisterInterface<Interface::RHI::IRenderInstance>(
+                    vulkan_render_instance
                 );
-                vulkan_instance->finalize();
+                vulkan_instance.finalize();
             }
         } dll_loader;
     }

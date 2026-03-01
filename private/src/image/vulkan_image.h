@@ -87,8 +87,8 @@ namespace Arieo
         VkFormat m_vk_image_format;
         VkImage m_vk_image;
         
-        Base::Instance<VulkanImageView> m_vulkan_image_view;
-        Base::Instance<VulkanImageSampler> m_vulkan_image_sampler;
+        Base::Interop::Instance<VulkanImageView> m_vulkan_image_view;
+        Base::Interop::Instance<VulkanImageSampler> m_vulkan_image_sampler;
     };
 }
 

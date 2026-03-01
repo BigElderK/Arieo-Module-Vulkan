@@ -77,8 +77,8 @@ namespace Arieo
         ::VmaAllocator m_vma_allocator;
 
         VkPhysicalDevice m_vk_phys_device; 
-        Base::Instance<VulkanRenderCommandQueue> m_graphics_queue;
-        Base::Instance<VulkanPresentCommandQueue> m_present_queue;
+        Base::Interop::Instance<VulkanRenderCommandQueue> m_graphics_queue;
+        Base::Interop::Instance<VulkanPresentCommandQueue> m_present_queue;
 
         std::uint32_t m_graphic_queue_index;
         std::uint32_t m_present_queue_index;

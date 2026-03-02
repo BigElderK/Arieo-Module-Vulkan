@@ -32,7 +32,7 @@ namespace Arieo
             vkGetPhysicalDeviceProperties(m_vk_phys_device, &m_vk_phys_device_properties);
         }
 
-        Interface::RHI::Format findSupportedFormat(const std::vector<Interface::RHI::Format>& candidate_formats, Interface::RHI::ImageTiling, Interface::RHI::FormatFeatureFlags) override;
+        Interface::RHI::Format findSupportedFormat(const Base::Interop::DataArrayView<Interface::RHI::Format>& candidate_formats, Interface::RHI::ImageTiling, Interface::RHI::FormatFeatureFlags) override;
 
         Base::Interop::RawRef<Interface::RHI::IRenderCommandQueue> getGraphicsCommandQueue() override
         {
@@ -46,10 +46,10 @@ namespace Arieo
         Base::Interop::RawRef<Interface::RHI::ISwapchain> createSwapchain(Base::Interop::RawRef<Interface::RHI::IRenderSurface>) override;
         void destroySwapchain(Base::Interop::RawRef<Interface::RHI::ISwapchain>) override;
 
-        Base::Interop::RawRef<Interface::RHI::IFramebuffer> createFramebuffer(Base::Interop::RawRef<Interface::RHI::IPipeline>, Base::Interop::RawRef<Interface::RHI::ISwapchain> swapchain, std::vector<Base::Interop::RawRef<Interface::RHI::IImageView>>& attachment_array) override;
+        Base::Interop::RawRef<Interface::RHI::IFramebuffer> createFramebuffer(Base::Interop::RawRef<Interface::RHI::IPipeline>, Base::Interop::RawRef<Interface::RHI::ISwapchain> swapchain, const Base::Interop::DataArrayView<Base::Interop::RawRef<Interface::RHI::IImageView>>& attachment_array) override;
         void destroyFramebuffer(Base::Interop::RawRef<Interface::RHI::IFramebuffer>) override;
 
-        Base::Interop::RawRef<Interface::RHI::IShader> createShader(void* buf, size_t buf_size) override;
+        Base::Interop::RawRef<Interface::RHI::IShader> createShader(const void* buf, size_t buf_size) override;
         void destroyShader(Base::Interop::RawRef<Interface::RHI::IShader>) override;
 
         Base::Interop::RawRef<Interface::RHI::IPipeline> createPipeline(Base::Interop::RawRef<Interface::RHI::IShader> vert_shader, Base::Interop::RawRef<Interface::RHI::IShader> frag_shader, Base::Interop::RawRef<Interface::RHI::IImageView> target_color_attachment, Base::Interop::RawRef<Interface::RHI::IImageView> target_depth_attachment) override;

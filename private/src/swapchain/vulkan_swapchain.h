@@ -52,9 +52,14 @@ namespace Arieo
             return image_index;
         }
         
-        std::vector<Base::Interop::RawRef<Interface::RHI::IImageView>>& getImageViews() override
+        size_t getImageCount() override
         {
-            return m_image_view_array;
+            return m_image_view_array.size();
+        }
+
+        Base::Interop::RawRef<Interface::RHI::IImageView> getImageView(size_t index) override
+        {
+            return m_image_view_array[index];
         }
 
         Base::Math::Rect<size_t>& getExtent() override
@@ -82,7 +87,3 @@ namespace Arieo
         std::vector<Base::Interop::RawRef<Interface::RHI::IImageView>> m_image_view_array;
     };
 }
-
-
-
-

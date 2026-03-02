@@ -10,14 +10,15 @@
 namespace Arieo
 {
     Interface::RHI::Format VulkanDevice::findSupportedFormat(
-        const std::vector<Interface::RHI::Format>& candidate_formats, 
+        const Base::Interop::DataArrayView<Interface::RHI::Format>& candidate_formats, 
         Interface::RHI::ImageTiling image_tiling,
         Interface::RHI::FormatFeatureFlags feature_flags)
     {
         VkImageTiling vk_image_tiling = Base::mapEnum<VkImageTiling>(image_tiling);
         VkFormatFeatureFlags vk_formate_feature_flags = Base::mapEnum<VkFormatFeatureFlags>(feature_flags);
-        for(Interface::RHI::Format candidate_format : candidate_formats)
+        for(size_t i = 0; i < candidate_formats.getItemCount(); i++)
         {
+            Interface::RHI::Format candidate_format = candidate_formats[i];
             VkFormat vk_candidate_format = Base::mapEnum<VkFormat>(candidate_format);
             VkFormatProperties props;
             vkGetPhysicalDeviceFormatProperties(m_vk_phys_device, vk_candidate_format, &props);
@@ -297,14 +298,15 @@ namespace Arieo
     Base::Interop::RawRef<Interface::RHI::IFramebuffer> VulkanDevice::createFramebuffer(
         Base::Interop::RawRef<Interface::RHI::IPipeline> pipeline, 
         Base::Interop::RawRef<Interface::RHI::ISwapchain> swapchain,
-        std::vector<Base::Interop::RawRef<Interface::RHI::IImageView>>& attachment_array
+        const Base::Interop::DataArrayView<Base::Interop::RawRef<Interface::RHI::IImageView>>& attachment_array
     )
     {
         VulkanPipeline* vulkan_pipeline = pipeline.castToInstance<VulkanPipeline>();
 
         std::vector<VkImageView> vk_attachment_array;
-        for(Base::Interop::RawRef<Interface::RHI::IImageView>& attach_image_view : attachment_array)
+        for(size_t i = 0; i < attachment_array.getItemCount(); i++)
         {
+            Base::Interop::RawRef<Interface::RHI::IImageView> attach_image_view = attachment_array[i];
             vk_attachment_array.emplace_back(attach_image_view.castToInstance<VulkanImageView>()->m_vk_image_view);
         };
 
@@ -336,7 +338,7 @@ namespace Arieo
         Base::Interop::RawRef<Interface::RHI::IFramebuffer>::destroyAs<VulkanFramebuffer>(std::move(framebuffer));
     }
 
-    Base::Interop::RawRef<Interface::RHI::IShader> VulkanDevice::createShader(void* buf, size_t buf_size)
+    Base::Interop::RawRef<Interface::RHI::IShader> VulkanDevice::createShader(const void* buf, size_t buf_size)
     {
         VkShaderModuleCreateInfo create_info{};
         create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;

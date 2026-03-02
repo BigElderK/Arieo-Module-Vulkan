@@ -102,15 +102,14 @@ namespace Arieo
             // TODO: crash here:
             // vkDestroyInstance(m_vk_instance, nullptr);
             m_vk_instance = VK_NULL_HANDLE;
-
-            m_hardware_information_array.clear();
         }
     }        
     
-    std::vector<std::string>& VulkanInstance::getHardwareInfomations()
+    Base::Interop::SharedRef<Base::IDataList<const char*>> VulkanInstance::getHardwareInfomations()
     {
         assert(m_vk_instance != VK_NULL_HANDLE);
-        if(m_hardware_information_array.size() == 0)
+        
+        std::vector<std::string> hardware_information_array;
         {
             uint32_t vk_phys_device_count = 0;
             vkEnumeratePhysicalDevices(m_vk_instance, &vk_phys_device_count, nullptr);
@@ -219,7 +218,7 @@ namespace Arieo
                         );
                     }
                 }
-                m_hardware_information_array.emplace_back(
+                hardware_information_array.emplace_back(
                     basic_info_string
                     + device_memory_info_string 
                     + queue_family_info_string
@@ -227,7 +226,15 @@ namespace Arieo
                 );
             }
         }
-        return m_hardware_information_array;
+        
+        return Base::Interop::SharedRef<Base::IDataList<const char*>>::createInstance<Base::DataList<const char*>>
+        (
+            std::move(hardware_information_array),
+            [](auto& hardware_information_array, size_t index) -> const char*
+            {
+                return hardware_information_array[index].c_str();
+            }
+        );
     }
 
     void VulkanInstance::destroySurface(Base::Interop::RawRef<Interface::RHI::IRenderSurface> surface)
